@@ -3,15 +3,18 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class HomePage extends StatefulWidget {
+import 'package:rrptflutter/screens/HomeScreen.dart';
+import 'package:rrptflutter/screens/FavouriteScreen.dart';
+
+class DrawerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _HomePageState();
+    return _DrawerHomeScreenState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -23,48 +26,67 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(color: Colors.indigo[400]),
+              decoration: BoxDecoration(color: Colors.black12),
             ),
             ListTile(
               title: Text("Home Page"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.home),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+//                Navigator.push(context, MaterialPageRoute(builder: (context) {
+//                  return HomeScreen();
+//                })
+//                );
+              },
             ),
             ListTile(
               title: Text("Favourite"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.favorite),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return FavouriteScreen();
+                }));
+              },
             ),
             ListTile(
               title: Text("Notification"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.notifications),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
               title: Text("Share"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.share),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
               title: Text("About"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.perm_identity),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.account_box),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             )
           ],
         ),
       ),
-      body: Container(),
+      body: HomeScreen(),
     );
   }
 }
