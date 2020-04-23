@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:share/share.dart';
 
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/FavouriteScreen.dart';
@@ -67,6 +68,9 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.share),
               onTap: () {
                 Navigator.of(context).pop();
+                final RenderBox box = context.findRenderObject();
+
+                Share.share('check out my website https://example.com');
               },
             ),
             ListTile(

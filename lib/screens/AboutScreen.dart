@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -21,8 +22,19 @@ class _AboutScreenState extends State<AboutScreen> {
       ),
       body: Container(
         child: Center(
-          child: Text("a"),
-        ),
+            child: Column(
+          children: <Widget>[
+            Image(
+              image: AssetImage("assets/icon/icon.png"),
+            ),
+            Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "v^1.0.0",
+                  textAlign: TextAlign.center,
+                )),
+          ],
+        )),
       ),
     );
   }

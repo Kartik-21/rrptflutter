@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:rrptflutter/util/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
 
+  //get book related data from server
   Future<List<BookData>> _getBookData() async {
     var i = UrlData();
     var url = i.GET_PDF_DATA;
@@ -44,7 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return books;
   }
 
-  _pdfurldata() async {}
+  //open a pdf file
+  _pdfurldata(String ur) async {
+    String url = ur;
+    if (await canLaunch(url)) {
+      Fluttertoast.showToast(msg: "Opening File...");
+      await launch(url);
+    } else {
+      Fluttertoast.showToast(msg: "Could't Open File");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
         if (snapshot.data == null) {
           return Container(
             child: Center(
-              child: Text(
-                "Loading...",
-                style: textStyle,
-              ),
-            ),
+                child: SpinKitThreeBounce(
+              color: Colors.white,
+              size: 40.0,
+            )),
           );
         } else {
           return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                debugPrint(baseurl + snapshot.data[index].book_image_url);
+                //debugPrint(baseurl + snapshot.data[index].book_image_url);
                 return Card(
                   //  margin: EdgeInsets.all(10.0),
                   child: Padding(
@@ -82,14 +93,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 85.0,
                             fit: BoxFit.cover,
                           )),
-                      title: Text(snapshot.data[index].book_title),
+                      title: Text(
+                        snapshot.data[index].book_title,
+                        style: textStyle,
+                      ),
                       subtitle: Text(snapshot.data[index].book_lang),
-                      trailing: GestureDetector(child: Icon(Icons.add)
-                      ,onTap: (){
-                        debugPrint("ok");
-                        },),
+                      trailing: GestureDetector(
+                        child: Icon(Icons.add),
+                        onTap: () {
+                          debugPrint("ok");
+                        },
+                      ),
                       onTap: () {
-                        //pdfurldata("$baseurl"+snapshot.data[index].book_pdf_url);
+                        _pdfurldata(
+                            "$baseurl" + snapshot.data[index].book_pdf_url);
                       },
                     ),
                   ),
