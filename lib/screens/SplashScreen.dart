@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:rrptflutter/screens//HomeScreen.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
@@ -66,7 +64,7 @@ class SplashScreenState extends State<SplashScreen>
               Padding(
                   padding: EdgeInsets.only(bottom: 30.0),
                   child: new Image.asset(
-                    'img/mars.png',
+                    'img/icon.png',
                     height: 25.0,
                     fit: BoxFit.scaleDown,
                   ))
@@ -76,7 +74,7 @@ class SplashScreenState extends State<SplashScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Image.asset(
-                'img/mars.png',
+                'img/icon.png',
                 width: animation.value * 250,
                 height: animation.value * 250,
               ),

@@ -46,9 +46,10 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.favorite),
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return FavouriteScreen();
-                }));
+//                Navigator.push(context, MaterialPageRoute(builder: (context) {
+//                  return FavouriteScreen();
+//                }));
+                Navigator.pushNamed(context, "FAVOURITE_SCREEN");
               },
             ),
             ListTile(
@@ -57,6 +58,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.notifications),
               onTap: () {
                 Navigator.of(context).pop();
+                Navigator.pushNamed(context, "NOTIFICATION_SCREEN");
               },
             ),
             ListTile(
@@ -73,6 +75,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.perm_identity),
               onTap: () {
                 Navigator.of(context).pop();
+                Navigator.pushNamed(context, "ABOUT_SCREEN");
               },
             ),
             ListTile(

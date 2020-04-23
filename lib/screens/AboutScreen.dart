@@ -3,25 +3,25 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class FavouriteScreen extends StatefulWidget {
+class AboutScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _FavouriteScreenState();
+    return _AboutScreenState();
   }
 }
 
-class _FavouriteScreenState extends State<FavouriteScreen> {
+class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Favourite"),
+        title: Text("About"),
       ),
       body: Container(
         child: Center(
-          child: Text("F"),
+          child: Text("a"),
         ),
       ),
     );
