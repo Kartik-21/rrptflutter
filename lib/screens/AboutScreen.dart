@@ -20,21 +20,29 @@ class _AboutScreenState extends State<AboutScreen> {
       appBar: AppBar(
         title: Text("About"),
       ),
-      body: Container(
-        child: Center(
-            child: Column(
-          children: <Widget>[
-            Image(
-              image: AssetImage("assets/icon/icon.png"),
-            ),
-            Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  "v^1.0.0",
-                  textAlign: TextAlign.center,
-                )),
-          ],
-        )),
+      body: Center(
+        child: Container(
+          height: 300.0,
+          width: 300.0,
+          child: Center(
+              child: Column(
+            children: <Widget>[
+              Image.asset(
+                "assets/icon/icon.png",
+                height: 150.0,
+                width: 150.0,
+                fit: BoxFit.cover,
+              ),
+              Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    "v 1.0.0",
+                    style: TextStyle(fontSize: 16.0),
+                    textAlign: TextAlign.center,
+                  )),
+            ],
+          )),
+        ),
       ),
     );
   }
