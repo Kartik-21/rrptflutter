@@ -16,10 +16,10 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
 
-  //get book related data from server
+  //get notification related data from server
   Future<List<NotificationData>> _getNotificationData() async {
-    var i = UrlData();
-    var url = i.GET_NOTI_DATA;
+    var i1 = UrlData();
+    var url = i1.GET_NOTI_DATA;
     baseurl = UrlData.BASE_URL;
     print(url);
     var result = await http.get(url);
@@ -30,10 +30,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
     for (var i in data) {
       var noti =
           NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
+      debugPrint(noti.toString());
       notis.add(noti);
     }
     print(notis.length);
-    //   return notis;
+     return notis;
   }
 
   @override
@@ -48,26 +49,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: FutureBuilder(
         future: _getNotificationData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // ignore: missing_return
+          print(snapshot.data.toString());
           if (snapshot.data == null) {
-            return Container(
-              child: Center(
-                  child: SpinKitThreeBounce(
+            return Center(
+                child: Container(
+              child: SpinKitThreeBounce(
                 color: Colors.white,
                 size: 40.0,
-              )),
-            );
+              ),
+            ));
           } else {
-            ListView.builder(
+            return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     //  margin: EdgeInsets.all(10.0),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 1.0),
+                      padding: EdgeInsets.symmetric(vertical: 5.0),
                       child: ListTile(
                         title: Text(
-                          //snapshot.data[index].book_title,
-                          "hello here",
+                          snapshot.data[index].noti_name,
+                          //"hello here",
                           style: textStyle,
                         ),
                       ),

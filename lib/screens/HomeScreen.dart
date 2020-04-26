@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var i = UrlData();
     var url = i.GET_PDF_DATA;
     baseurl = UrlData.BASE_URL;
-    print(baseurl);
+   // print(url);
     var result = await http.get(url);
     var data = json.decode(result.body);
 
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FutureBuilder(
       future: _getBookData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //  print(snapshot.toString());
+      //    print(snapshot.data.toString());
         if (snapshot.data == null) {
           return Container(
             child: Center(
