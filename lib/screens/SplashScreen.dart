@@ -1,86 +1,40 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:rrptflutter/screens//HomeScreen.dart';
-import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
-import 'package:rrptflutter/screens/HomeScreen.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
-  SplashScreenState createState() => new SplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  var _visible = true;
-
-  AnimationController animationController;
-
-  Animation<double> animation;
-
-  startTime() async {
-    var _duration = new Duration(seconds: 3);
-
-    return new Timer(_duration, navigationPage);
-  }
-
-  void navigationPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return DrawerHomeScreen();
-    }));
-  }
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    hideScreen();
+  }
 
-    animationController = new AnimationController(
-        vsync: this, duration: new Duration(seconds: 2));
-
-    animation =
-        new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
-
-    animation.addListener(() => this.setState(() {}));
-
-    animationController.forward();
-
-    setState(() {
-      _visible = !_visible;
+  ///hide your splash screen
+  Future<void> hideScreen() async {
+    Future.delayed(Duration(milliseconds: 3600), () {
+      FlutterSplashScreen.hide();
     });
-
-    startTime();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
-                  child: new Image.asset(
-                    'img/icon.png',
-                    height: 25.0,
-                    fit: BoxFit.scaleDown,
-                  ))
-            ],
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('flutter_splash_screen'),
+        ),
+        body: Center(
+          child: Text(
+            'by CrazyCodeBoy',
+            style: TextStyle(fontSize: 20),
           ),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Image.asset(
-                'img/icon.png',
-                width: animation.value * 250,
-                height: animation.value * 250,
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
