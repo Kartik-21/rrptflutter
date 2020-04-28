@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:rrptflutter/util/UrlData.dart';
+import 'package:rrptflutter/constants/UrlData.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notis.add(noti);
     }
     print(notis.length);
-     return notis;
+    return notis;
   }
 
   @override

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/screens/LoginScreen.dart';
 import 'dart:convert';
 import 'package:share/share.dart';
 
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/FavouriteScreen.dart';
+import 'package:rrptflutter/constants/SigninWithGoogle.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -88,6 +90,11 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.account_box),
               onTap: () {
                 Navigator.of(context).pop();
+                signOutGoogle();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) {
+                  return LoginScreen();
+                }), ModalRoute.withName('/'));
               },
             )
           ],

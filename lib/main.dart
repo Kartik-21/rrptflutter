@@ -7,6 +7,7 @@ import 'package:rrptflutter/screens/FavouriteScreen.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/NotificationScreen.dart';
 import 'package:rrptflutter/screens/SplashScreen.dart';
+import 'package:rrptflutter/screens/LoginScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: "RRPT",
         debugShowCheckedModeBanner: true,
-        home: DrawerHomeScreen(),
+        home: LoginScreen(),
         theme: ThemeData(
           primaryColor: Colors.indigo,
           accentColor: Colors.indigoAccent,
@@ -29,9 +30,7 @@ class MyApp extends StatelessWidget {
           "HOME_SCREEN": (context) => HomeScreen(),
           "FAVOURITE_SCREEN": (context) => FavouriteScreen(),
           "NOTIFICATION_SCREEN": (context) => NotificationScreen(),
-          //"SHARE_SCREEN":,
           "ABOUT_SCREEN": (context) => AboutScreen(),
-          //"LOGOUT_SCREEN":
         });
   }
 }
