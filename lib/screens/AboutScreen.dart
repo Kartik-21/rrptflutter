@@ -20,28 +20,51 @@ class _AboutScreenState extends State<AboutScreen> {
       appBar: AppBar(
         title: Text("About"),
       ),
-      body: Center(
-        child: Container(
-          height: 300.0,
-          width: 300.0,
-          child: Center(
-              child: Column(
-            children: <Widget>[
-              Image.asset(
-                "assets/icon/icon.png",
-                height: 150.0,
-                width: 150.0,
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Text(
-                    "v 1.0.0",
-                    style: TextStyle(fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  )),
-            ],
-          )),
+      body: Container(
+        child: Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Image.asset(
+                  "assets/icon/icon.png",
+                  height: 100.0,
+                  width: 100.0,
+                  fit: BoxFit.cover,
+                ),
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "Raj Rajedra Prakashan Trust",
+                      style: TextStyle(fontSize: 25.0),
+                      textAlign: TextAlign.center,
+                    )),
+                Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: Text(
+                      "v 1.0.0",
+                      style: TextStyle(fontSize: 20.0),
+                      textAlign: TextAlign.center,
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(top:200.0),
+                    child: Text(
+                      "rrpt.books@gmail.com",
+                      style: TextStyle(fontSize: 16.0,color: Colors.blue),
+                      textAlign: TextAlign.center,
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(top:5.0),
+                    child: Text(
+                      "Copyright 2020 All rights reserved.",
+                      style: TextStyle(fontSize: 16.0),
+                      textAlign: TextAlign.center,
+                    )),
+
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -70,9 +70,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.share),
               onTap: () {
                 Navigator.of(context).pop();
-                final RenderBox box = context.findRenderObject();
-
-                Share.share('check out my website https://example.com');
+                Share.share('check out my application https://example.com');
               },
             ),
             ListTile(

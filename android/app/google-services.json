@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "321638515109",
+    "firebase_url": "https://rrptflutter.firebaseio.com",
+    "project_id": "rrptflutter",
+    "storage_bucket": "rrptflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321638515109:android:0f9041c54b1d13fccae84c",
+        "android_client_info": {
+          "package_name": "com.jkp.rrptflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321638515109-4v84n4s1bv962f37ntfvss85lsu39ttn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jkp.rrptflutter",
+            "certificate_hash": "028f8c3d3a29318f46bb2fe0313943a477c47bfe"
+          }
+        },
+        {
+          "client_id": "321638515109-n45k78t9gvu9gi0s6ipcd3cg6mkmv8v9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlnJoSYBjw3S6ifp_r9XP8GsN9Gh23U_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321638515109-n45k78t9gvu9gi0s6ipcd3cg6mkmv8v9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

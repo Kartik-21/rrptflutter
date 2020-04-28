@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SignInButton(
                     Buttons.GoogleDark,
                     onPressed: () {
-                      //   signInWithGoogle().whenComplete(() {
+                         signInWithGoogle().whenComplete(() {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                       );
-                      //    });
+                          });
                     },
                   ),
                 ),
