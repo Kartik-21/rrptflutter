@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:rrptflutter/constants/UrlData.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -15,6 +18,17 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
+
+  //open file link content
+  _openfiledata(String ur) async {
+    String url = ur;
+    if (await canLaunch(url)) {
+      Fluttertoast.showToast(msg: "Opening File...");
+      await launch(url);
+    } else {
+      Fluttertoast.showToast(msg: "Could't Open File");
+    }
+  }
 
   //get notification related data from server
   Future<List<NotificationData>> _getNotificationData() async {
@@ -40,7 +54,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    TextStyle textStyle = Theme.of(context).textTheme.subhead;
     return Scaffold(
       appBar: AppBar(
         title: Text("Notification"),
@@ -50,7 +64,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         future: _getNotificationData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // ignore: missing_return
-          print(snapshot.data.toString());
+          //        print(snapshot.data.toString());
           if (snapshot.data == null) {
             return Center(
                 child: Container(
@@ -68,9 +82,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.0),
                       child: ListTile(
-                        title: Text(
-                          snapshot.data[index].noti_name,
-                          //"hello here",
+                        title: Linkify(
+                          text: snapshot.data[index].noti_name,
+                          onOpen: (link) {
+                            print('${link.url}');
+                            _openfiledata('${link.url}');
+                          },
                           style: textStyle,
                         ),
                       ),

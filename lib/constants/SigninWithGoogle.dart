@@ -26,6 +26,10 @@ Future<String> signInWithGoogle() async {
   final AuthResult authResult = await _auth.signInWithCredential(credential);
   final FirebaseUser user = authResult.user;
 
+  if (user != null) {
+    await _sentLoginData();
+  }
+
   assert(user.email != null);
   assert(user.displayName != null);
   assert(user.photoUrl != null);
@@ -44,6 +48,7 @@ Future<String> signInWithGoogle() async {
 
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(user.uid == currentUser.uid);
+
   return 'SignIn Successful';
 }
 
@@ -55,8 +60,10 @@ void signOutGoogle() async {
 Future _sentLoginData() async {
   var i = UrlData();
   var url = i.SENT_LOGIN_DATA;
+  print(url);
   var data = {'name': name, 'email': email};
   var result = await http.post(url, body: json.encode(data));
   var msg = json.decode(result.body);
-  Fluttertoast.showToast(msg: msg);
+  print(msg);
+//  Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
 }

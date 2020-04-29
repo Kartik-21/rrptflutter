@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var i = UrlData();
     var url = i.GET_PDF_DATA;
     baseurl = UrlData.BASE_URL;
-   // print(url);
+    print(url);
     var result = await http.get(url);
     var data = json.decode(result.body);
 

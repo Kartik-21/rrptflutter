@@ -33,20 +33,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                 accountName: Text('$name'),
                 accountEmail: Text('$email'),
                 currentAccountPicture:
-                    // CircleAvatar(
-//                  backgroundColor:
-//                      Theme.of(context).platform == TargetPlatform.iOS
-//                          ? Colors.blue
-//                          : Colors.white,
-                    //   child:
-//                Text(
-//                  "A",
-//                  style: TextStyle(fontSize: 30.0),
-//                ),
-                    Image.network(imageUrl)
-                //),
-                //decoration: BoxDecoration(color: Colors.black12),
-                ),
+                    CircleAvatar(backgroundImage: NetworkImage(imageUrl))),
             ListTile(
               title: Text("Home Page"),
               trailing: Icon(Icons.arrow_right),
