@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:rrptflutter/constants/SigninWithGoogle.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,6 +16,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -57,16 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
                   child: SignInButton(
                     Buttons.GoogleDark,
-                    onPressed: () {
-                         signInWithGoogle().whenComplete(() {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return DrawerHomeScreen();
-                          },
-                        ),
-                      );
-                          });
+                    onPressed: () async {
+                      signInWithGoogle().then((String value) {
+                        print(value);
+                        Fluttertoast.showToast(msg: value.toString());
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return DrawerHomeScreen();
+                        }));
+                      }).catchError((e) {
+                        signOutGoogle();
+                        Fluttertoast.showToast(msg: "Error in SignIn",toastLength: Toast.LENGTH_LONG);
+                      });
                     },
                   ),
                 ),

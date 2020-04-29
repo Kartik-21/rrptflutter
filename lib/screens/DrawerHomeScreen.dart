@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -28,9 +29,24 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.black12),
-            ),
+            UserAccountsDrawerHeader(
+                accountName: Text('$name'),
+                accountEmail: Text('$email'),
+                currentAccountPicture:
+                    // CircleAvatar(
+//                  backgroundColor:
+//                      Theme.of(context).platform == TargetPlatform.iOS
+//                          ? Colors.blue
+//                          : Colors.white,
+                    //   child:
+//                Text(
+//                  "A",
+//                  style: TextStyle(fontSize: 30.0),
+//                ),
+                    Image.network(imageUrl)
+                //),
+                //decoration: BoxDecoration(color: Colors.black12),
+                ),
             ListTile(
               title: Text("Home Page"),
               trailing: Icon(Icons.arrow_right),
