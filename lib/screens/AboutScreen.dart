@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -13,6 +15,17 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+
+  _openfiledata(String ur) async {
+    String url = ur;
+    if (await canLaunch(url)) {
+    //  Fluttertoast.showToast(msg: "Opening File...");
+      await launch(url);
+    } else {
+      //Fluttertoast.showToast(msg: "Could't Open File");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -48,20 +61,20 @@ class _AboutScreenState extends State<AboutScreen> {
                       textAlign: TextAlign.center,
                     )),
                 Padding(
-                    padding: EdgeInsets.only(top:200.0),
-                    child: Text(
-                      "rrpt.books@gmail.com",
-                      style: TextStyle(fontSize: 16.0,color: Colors.blue),
-                      textAlign: TextAlign.center,
+                    padding: EdgeInsets.only(top: 230.0),
+                    child: Linkify(
+                      text: "rrpt.books@gmail.com",
+                      onOpen: (link){
+                        _openfiledata('${link.url}');
+                      },
                     )),
                 Padding(
-                    padding: EdgeInsets.only(top:5.0),
+                    padding: EdgeInsets.only(top: 5.0),
                     child: Text(
                       "Copyright 2020 All rights reserved.",
                       style: TextStyle(fontSize: 16.0),
                       textAlign: TextAlign.center,
                     )),
-
               ],
             ),
           ),

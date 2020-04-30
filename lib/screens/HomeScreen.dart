@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var data = {'email': email, 'bid': bid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
+    print(msg);
     Fluttertoast.showToast(msg: msg);
   }
 
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: GestureDetector(
                         child: Icon(Icons.add),
                         onTap: () {
-                          debugPrint("add");
+                          debugPrint("add button");
                           _addbook(snapshot.data[index].book_id);
                         },
                       ),
