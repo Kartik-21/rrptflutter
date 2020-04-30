@@ -38,9 +38,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     print(url);
     var result = await http.get(url);
     var data = json.decode(result.body);
-
     List<NotificationData> notis = [];
-
     for (var i in data) {
       var noti =
           NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);

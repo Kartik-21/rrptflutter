@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.indigoAccent,
           brightness: Brightness.dark,
         ),
+
         routes: <String, WidgetBuilder>{
           "HOME_SCREEN": (context) => HomeScreen(),
           "FAVOURITE_SCREEN": (context) => FavouriteScreen(),
