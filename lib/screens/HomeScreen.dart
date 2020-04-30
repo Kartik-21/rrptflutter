@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/constants/SigninWithGoogle.dart';
 import 'dart:convert';
 import 'package:rrptflutter/constants/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,6 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return books;
   }
 
+  //add book to user favourite
+  Future _addbook(String bid) async {
+    var i = UrlData();
+    var base = UrlData.BASE_URL;
+    var url = i.ADD_PDF_TO_USER;
+    var data = {'email': email, 'bid': bid};
+    var result = await http.post(url, body: json.encode(data));
+    var msg = json.decode(result.body);
+    Fluttertoast.showToast(msg: msg);
+  }
+
   //open a pdf file
   _pdfurldata(String ur) async {
     String url = ur;
@@ -66,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FutureBuilder(
       future: _getBookData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-      //    print(snapshot.data.toString());
+        //    print(snapshot.data.toString());
         if (snapshot.data == null) {
           return Container(
             child: Center(
@@ -101,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: GestureDetector(
                         child: Icon(Icons.add),
                         onTap: () {
-                          debugPrint("ok");
+                          debugPrint("add");
+                          _addbook(snapshot.data[index].book_id);
                         },
                       ),
                       onTap: () {
