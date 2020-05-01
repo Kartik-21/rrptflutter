@@ -8,7 +8,8 @@ import 'package:share/share.dart';
 
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/FavouriteScreen.dart';
-import 'package:rrptflutter/constants/SigninWithGoogle.dart';
+import 'package:rrptflutter/utils/SigninWithGoogle.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        elevation: 5.0,
       ),
       drawer: Drawer(
         child: ListView(
@@ -33,7 +35,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                 accountName: Text('$name'),
                 accountEmail: Text('$email'),
                 currentAccountPicture:
-                    CircleAvatar(backgroundImage: NetworkImage(imageUrl))),
+                CircleAvatar(backgroundImage: NetworkImage(imageUrl))),
             ListTile(
               title: Text("Home Page"),
               trailing: Icon(Icons.arrow_right),
@@ -79,7 +81,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
             ListTile(
               title: Text("About"),
               trailing: Icon(Icons.arrow_right),
-              leading: Icon(Icons.perm_identity),
+              leading: Icon(Icons.info),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, "ABOUT_SCREEN");
@@ -88,14 +90,14 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.arrow_right),
-              leading: Icon(Icons.account_box),
+              leading: Icon(Icons.exit_to_app),
               onTap: () {
                 Navigator.of(context).pop();
                 signOutGoogle();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) {
-                  return LoginScreen();
-                }), ModalRoute.withName('/'));
+                      return LoginScreen();
+                    }), ModalRoute.withName('/'));
               },
             )
           ],

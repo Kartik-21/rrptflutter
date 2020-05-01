@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:rrptflutter/constants/SigninWithGoogle.dart';
+import 'package:rrptflutter/utils/SigninWithGoogle.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
+     //   centerTitle: true,
       ),
       body: Container(
         child: Center(
@@ -38,24 +39,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "Welcome To",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 32.0),
+                    style: TextStyle(fontSize: 32.0,fontFamily: 'nunito',),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 15.0),
+                  padding: EdgeInsets.only(top: 10.0),
                   child: Text(
                     "RRPT",
                     textAlign: TextAlign.center,
                     style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.w500),
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600,fontFamily: 'nunito'),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
+                  padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                   child: Text(
                     "Login in to Continue",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0),
+                    style: TextStyle(fontSize: 18.0,fontFamily: 'nunito'),
                   ),
                 ),
                 Divider(),
@@ -77,14 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Fluttertoast.showToast(msg: "Error in SignIn",toastLength: Toast.LENGTH_LONG);
                       });
                     },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
-                  child: SignInButton(
-                    Buttons.Facebook,
-                    onPressed: () {},
                   ),
                 ),
                 Padding(
