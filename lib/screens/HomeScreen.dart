@@ -48,6 +48,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return books;
   }
 
+  Future<void> _getData() async {
+    setState(() {
+     _getBookData();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getBookData();
+  }
+
   //add book to user favourite
   Future _addbook(String bid) async {
     var i = UrlData();
@@ -76,58 +88,68 @@ class _HomeScreenState extends State<HomeScreen> {
     TextStyle textStyle = Theme.of(context).textTheme.button;
     // TODO: implement build
     return Container(
-        child: FutureBuilder(
-      future: _getBookData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //    print(snapshot.data.toString());
-        if (snapshot.data == null) {
-          return Container(
-            child: Center(
-                child: SpinKitThreeBounce(
-              color: Colors.white,
-              size: 40.0,
-            )),
-          );
-        } else {
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                return Card(
-                  //  margin: EdgeInsets.all(10.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.0),
-                    child: ListTile(
-                      leading: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          child: Image.network(
-                            baseurl + snapshot.data[index].book_image_url,
-                            height: 60.0,
-                            width: 85.0,
-                            fit: BoxFit.cover,
-                          )),
-                      title: Text(
-                        snapshot.data[index].book_title,
-                        style: textStyle,
-                      ),
-                      subtitle: Text(snapshot.data[index].book_lang),
-                      trailing: GestureDetector(
-                        child: Icon(Icons.add),
+        child: RefreshIndicator(
+      onRefresh: _getData,
+      child: FutureBuilder(
+        future: _getBookData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //    print(snapshot.data.toString());
+          if (snapshot.data == null) {
+            return Container(
+              child: Center(
+                  child:
+//                  SpinKitThreeBounce(
+//                color: Colors.white,
+//                size: 40.0,
+//              )
+             CircularProgressIndicator(
+               //strokeWidth: 5.0,
+             backgroundColor: Colors.white,
+             )
+              )
+              ,
+            );
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                  return Card(
+                    //  margin: EdgeInsets.all(10.0),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 1.0),
+                      child: ListTile(
+                        leading: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            child: Image.network(
+                              baseurl + snapshot.data[index].book_image_url,
+                              height: 60.0,
+                              width: 85.0,
+                              fit: BoxFit.cover,
+                            )),
+                        title: Text(
+                          snapshot.data[index].book_title,
+                          style: textStyle,
+                        ),
+                        subtitle: Text(snapshot.data[index].book_lang),
+                        trailing: GestureDetector(
+                          child: Icon(Icons.add),
+                          onTap: () {
+                            debugPrint("add button");
+                            _addbook(snapshot.data[index].book_id);
+                          },
+                        ),
                         onTap: () {
-                          debugPrint("add button");
-                          _addbook(snapshot.data[index].book_id);
+                          _pdfurldata(
+                              "$baseurl" + snapshot.data[index].book_pdf_url);
                         },
                       ),
-                      onTap: () {
-                        _pdfurldata(
-                            "$baseurl" + snapshot.data[index].book_pdf_url);
-                      },
                     ),
-                  ),
-                );
-              });
-        }
-      },
+                  );
+                });
+          }
+        },
+      ),
     ));
   }
 }

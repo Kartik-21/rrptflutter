@@ -19,6 +19,18 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
 
+  Future<void> _getData() async {
+    setState(() {
+      _getNotificationData();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getNotificationData();
+  }
+
   //open file link content
   _openfiledata(String ur) async {
     String url = ur;
@@ -42,11 +54,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
     for (var i in data) {
       var noti =
           NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
-      debugPrint(noti.toString());
+      // debugPrint(noti.toString());
       notis.add(noti);
     }
     print(notis.length);
-    return notis;
+    // return notis;
   }
 
   @override
@@ -58,42 +70,49 @@ class _NotificationScreenState extends State<NotificationScreen> {
         title: Text("Notification"),
       ),
       body: Container(
-          child: FutureBuilder(
-        future: _getNotificationData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          // ignore: missing_return
-          //        print(snapshot.data.toString());
-          if (snapshot.data == null) {
-            return Center(
-                child: Container(
-              child: SpinKitThreeBounce(
-                color: Colors.white,
-                size: 40.0,
-              ),
-            ));
-          } else {
-            return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    //  margin: EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      child: ListTile(
-                        title: Linkify(
-                          text: snapshot.data[index].noti_name,
-                          onOpen: (link) {
-                            print('${link.url}');
-                            _openfiledata('${link.url}');
-                          },
-                          style: textStyle,
+          child: RefreshIndicator(
+        onRefresh: _getData,
+
+        child: FutureBuilder(
+          future: _getNotificationData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            // ignore: missing_return
+            //        print(snapshot.data.toString());
+            if (snapshot.data == null) {
+              return Center(
+                  child: Container(
+                      child:
+//                SpinKitThreeBounce(
+//                  color: Colors.white,
+//                  size: 40.0,
+//                ),
+                          CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              )));
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      //  margin: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.0),
+                        child: ListTile(
+                          title: Linkify(
+                            text: snapshot.data[index].noti_name,
+                            onOpen: (link) {
+                              print('${link.url}');
+                              _openfiledata('${link.url}');
+                            },
+                            style: textStyle,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                });
-          }
-        },
+                    );
+                  });
+            }
+          },
+        ),
       )),
     );
   }

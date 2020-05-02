@@ -19,6 +19,18 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
 
+  Future<void> _getData() async {
+    setState(() {
+      _getUserBookData();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserBookData();
+  }
+
   //get userbook related data from server
   Future<List<UserBookData>> _getUserBookData() async {
     var i = UrlData();
@@ -75,59 +87,63 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           title: Text("Favourite book"),
         ),
         body: Container(
-            child: FutureBuilder(
-          future: _getUserBookData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //  print(snapshot.data.toString());
-            if (snapshot.data == null) {
-              return Container(
-                height: 0.0,
-                width: 0.0,
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                    return Card(
-                      //  margin: EdgeInsets.all(10.0),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 1.0),
-                        child: ListTile(
-                          leading: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              child: Image.network(
-                                baseurl + snapshot.data[index].book_image_url,
-                                height: 60.0,
-                                width: 85.0,
-                                fit: BoxFit.cover,
-                              )),
-                          title: Text(
-                            snapshot.data[index].book_title,
-                            style: textStyle,
-                          ),
-                          //   subtitle: Text(snapshot.data[index].book_lang),
-                          trailing: GestureDetector(
-                            child: Icon(Icons.delete),
+            child: RefreshIndicator(
+          onRefresh: _getData,
+
+          child: FutureBuilder(
+            future: _getUserBookData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //  print(snapshot.data.toString());
+              if (snapshot.data == null) {
+                return Container(
+                  height: 0.0,
+                  width: 0.0,
+                );
+              } else {
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                      return Card(
+                        //  margin: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 1.0),
+                          child: ListTile(
+                            leading: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                child: Image.network(
+                                  baseurl + snapshot.data[index].book_image_url,
+                                  height: 60.0,
+                                  width: 85.0,
+                                  fit: BoxFit.cover,
+                                )),
+                            title: Text(
+                              snapshot.data[index].book_title,
+                              style: textStyle,
+                            ),
+                            //   subtitle: Text(snapshot.data[index].book_lang),
+                            trailing: GestureDetector(
+                              child: Icon(Icons.delete),
+                              onTap: () {
+                                setState(() {
+                                  debugPrint("delete button");
+                                  _delbook(snapshot.data[index].user_book_id);
+                                  _getUserBookData();
+                                });
+                              },
+                            ),
                             onTap: () {
-                              setState(() {
-                                debugPrint("delete button");
-                                _delbook(snapshot.data[index].user_book_id);
-                                _getUserBookData();
-                              });
+                              _pdfurldata("$baseurl" +
+                                  snapshot.data[index].book_pdf_url);
                             },
                           ),
-                          onTap: () {
-                            _pdfurldata(
-                                "$baseurl" + snapshot.data[index].book_pdf_url);
-                          },
                         ),
-                      ),
-                    );
-                  });
-            }
-          },
+                      );
+                    });
+              }
+            },
+          ),
         )));
   }
 }
