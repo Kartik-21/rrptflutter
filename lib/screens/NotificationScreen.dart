@@ -21,14 +21,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Future<void> _getData() async {
     setState(() {
-      _getNotificationData();
+     // _getNotificationData();
+      Fluttertoast.showToast(msg: "Loading...");
+
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getNotificationData();
+ //   _getNotificationData();
   }
 
   //open file link content
@@ -58,7 +60,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notis.add(noti);
     }
     print(notis.length);
-    // return notis;
+     return notis;
   }
 
   @override

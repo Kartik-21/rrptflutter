@@ -50,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _getData() async {
     setState(() {
-     _getBookData();
+   //  _getBookData();
+      Fluttertoast.showToast(msg: "Loading...");
     });
   }
 

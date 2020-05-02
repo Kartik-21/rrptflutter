@@ -21,14 +21,16 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   Future<void> _getData() async {
     setState(() {
-      _getUserBookData();
+   //   _getUserBookData();
+      Fluttertoast.showToast(msg: "Loading...");
+
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getUserBookData();
+ //   _getUserBookData();
   }
 
   //get userbook related data from server
@@ -129,7 +131,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 setState(() {
                                   debugPrint("delete button");
                                   _delbook(snapshot.data[index].user_book_id);
-                                  _getUserBookData();
+                                 // _getUserBookData();
                                 });
                               },
                             ),
