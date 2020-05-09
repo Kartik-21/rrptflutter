@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -14,9 +15,11 @@ String email;
 String imageUrl;
 
 Future<String> signInWithGoogle() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+  await googleSignInAccount.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.getCredential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -26,9 +29,6 @@ Future<String> signInWithGoogle() async {
   final AuthResult authResult = await _auth.signInWithCredential(credential);
   final FirebaseUser user = authResult.user;
 
-  if (user != null) {
-    await _sentLoginData();
-  }
 
   assert(user.email != null);
   assert(user.displayName != null);
@@ -38,6 +38,13 @@ Future<String> signInWithGoogle() async {
   email = user.email;
   imageUrl = user.photoUrl;
 
+  if (user != null) {
+    await _sentLoginData(user);
+    preferences.setString("name", name);
+    preferences.setString("email", email);
+    preferences.setString("imageurl", imageUrl);
+  }
+
 //  // Only taking the first part of the name, i.e., First Name
 //  if (name.contains(" ")) {
 //    name = name.substring(0, name.indexOf(" "));
@@ -45,10 +52,8 @@ Future<String> signInWithGoogle() async {
 
   assert(!user.isAnonymous);
   assert(await user.getIdToken() != null);
-
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(user.uid == currentUser.uid);
-
   return 'SignIn Successful';
 }
 
@@ -57,13 +62,26 @@ void signOutGoogle() async {
   print("Sign Out");
 }
 
-Future _sentLoginData() async {
+adduserdata() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("name", name);
+  preferences.setString("email", email);
+  preferences.setString("imageurl", imageUrl);
+}
+
+Future _sentLoginData(FirebaseUser user) async {
   var i = UrlData();
   var url = i.SENT_LOGIN_DATA;
   print(url);
-  var data = {'name': name, 'email': email};
+  print(user);
+  print(user.email);
+  var data = {'name': user.displayName, 'email': user.email};
   var result = await http.post(url, body: json.encode(data));
   var msg = json.decode(result.body);
-  print(msg);
+  print("login $msg");
 //  Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
+}
+
+getuserdata() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
 }

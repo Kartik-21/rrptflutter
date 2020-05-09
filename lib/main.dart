@@ -8,6 +8,8 @@ import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/NotificationScreen.dart';
 import 'package:rrptflutter/screens/SplashScreen.dart';
 import 'package:rrptflutter/screens/LoginScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,18 +22,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: "RRPT",
         debugShowCheckedModeBanner: true,
-        home: LoginScreen(),
+        home: FirstScreen(),
         theme: ThemeData(
           primaryColor: Colors.indigo,
           accentColor: Colors.indigoAccent,
           brightness: Brightness.dark,
         ),
-
+        initialRoute: '/',
         routes: <String, WidgetBuilder>{
-          "HOME_SCREEN": (context) => HomeScreen(),
-          "FAVOURITE_SCREEN": (context) => FavouriteScreen(),
-          "NOTIFICATION_SCREEN": (context) => NotificationScreen(),
-          "ABOUT_SCREEN": (context) => AboutScreen(),
+          "/login": (context) => LoginScreen(),
+          "/favourite": (context) => FavouriteScreen(),
+          "/notification": (context) => NotificationScreen(),
+          "/about": (context) => AboutScreen(),
         });
+  }
+}
+
+class FirstScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return FutureBuilder<FirebaseUser>(
+      future: FirebaseAuth.instance.currentUser(),
+      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.hasData) {
+          FirebaseUser user = snapshot.data;
+          var name = user.displayName;
+          var email = user.email;
+          print(email);
+          print(name);
+          Fluttertoast.showToast(msg: name + " " + email);
+          print("main $user");
+          return DrawerHomeScreen();
+        } else {
+          return LoginScreen();
+        }
+      },
+    );
   }
 }

@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:rrptflutter/screens/LoginScreen.dart';
 import 'dart:convert';
 import 'package:share/share.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/FavouriteScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -20,8 +21,18 @@ class DrawerHomeScreen extends StatefulWidget {
 }
 
 class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
+  SharedPreferences preferences;
+
+  getuserdata() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future<FirebaseUser> user = FirebaseAuth.instance.currentUser();
+    print(user);
+    //   String name = preferences.getString('name');
+    print("shred value $name");
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -31,11 +42,11 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-                accountName: Text('$name'),
-                accountEmail: Text('$email'),
-                currentAccountPicture:
-                CircleAvatar(backgroundImage: NetworkImage(imageUrl))),
+//            UserAccountsDrawerHeader(
+//                accountName: Text('$name'),
+//                accountEmail: Text('$email'),
+//                currentAccountPicture:
+//                    CircleAvatar(backgroundImage: NetworkImage(imageUrl))),
             ListTile(
               title: Text("Home Page"),
               trailing: Icon(Icons.arrow_right),
@@ -57,7 +68,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
 //                Navigator.push(context, MaterialPageRoute(builder: (context) {
 //                  return FavouriteScreen();
 //                }));
-                Navigator.pushNamed(context, "FAVOURITE_SCREEN");
+                Navigator.pushNamed(context, "/favourite");
               },
             ),
             ListTile(
@@ -66,7 +77,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.notifications),
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, "NOTIFICATION_SCREEN");
+                Navigator.pushNamed(context, "/notification");
               },
             ),
             ListTile(
@@ -84,20 +95,21 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               leading: Icon(Icons.info),
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, "ABOUT_SCREEN");
+                Navigator.pushNamed(context, "/about");
               },
             ),
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.exit_to_app),
-              onTap: () {
+              onTap: () async {
                 Navigator.of(context).pop();
                 signOutGoogle();
+                Navigator.pop(context);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) {
-                      return LoginScreen();
-                    }), ModalRoute.withName('/'));
+                  return LoginScreen();
+                }), ModalRoute.withName('/login'));
               },
             )
           ],

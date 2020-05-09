@@ -57,7 +57,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     padding: EdgeInsets.all(0.0),
                     child: Text(
                       "v 1.0.0",
-                      style: TextStyle(fontSize: 20.0),
+                      style: TextStyle(fontSize: 16.0),
                       textAlign: TextAlign.center,
                     )),
                 Padding(

@@ -86,7 +86,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Favourite book"),
+          title: Text("Favourite"),
         ),
         body: Container(
             child: RefreshIndicator(

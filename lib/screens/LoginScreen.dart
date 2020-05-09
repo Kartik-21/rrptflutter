@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
-     //   centerTitle: true,
+        //   centerTitle: true,
       ),
       body: Container(
         child: Center(
@@ -39,7 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "Welcome To",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 32.0,fontFamily: 'nunito',),
+                    style: TextStyle(
+                      fontSize: 32.0,
+                      fontFamily: 'nunito',
+                    ),
                   ),
                 ),
                 Padding(
@@ -47,8 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "RRPT",
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600,fontFamily: 'nunito'),
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'nunito'),
                   ),
                 ),
                 Padding(
@@ -56,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     "Login in to Continue",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0,fontFamily: 'nunito'),
+                    style: TextStyle(fontSize: 18.0, fontFamily: 'nunito'),
                   ),
                 ),
                 Divider(),
@@ -68,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       signInWithGoogle().then((String value) {
                         print(value);
+                        Navigator.pop(context);
                         Fluttertoast.showToast(msg: value.toString());
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
@@ -75,7 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         }));
                       }).catchError((e) {
                         signOutGoogle();
-                        Fluttertoast.showToast(msg: "Error in SignIn",toastLength: Toast.LENGTH_LONG);
+                        Fluttertoast.showToast(
+                            msg: "Error in SignIn",
+                            toastLength: Toast.LENGTH_LONG);
                       });
                     },
                   ),
@@ -85,7 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       EdgeInsets.symmetric(vertical: 5.0, horizontal: 50.0),
                   child: SignInButton(
                     Buttons.Apple,
-                    onPressed: () {},
+                    onPressed: () {
+                      Fluttertoast.showToast(msg: "It is under Development");
+                    },
                   ),
                 ),
                 Padding(
@@ -93,7 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
                   child: SignInButton(
                     Buttons.Email,
-                    onPressed: () {},
+                    onPressed: () {
+                      Fluttertoast.showToast(msg: "It is under Development");
+                    },
                   ),
                 ),
                 Divider(),

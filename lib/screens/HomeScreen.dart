@@ -66,6 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
     var i = UrlData();
     var base = UrlData.BASE_URL;
     var url = i.ADD_PDF_TO_USER;
+    print(url);
+    print(email);
+    print(bid);
     var data = {'email': email, 'bid': bid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
@@ -99,14 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
             return Container(
               child: Center(
                   child:
-//                  SpinKitThreeBounce(
-//                color: Colors.white,
-//                size: 40.0,
-//              )
-             CircularProgressIndicator(
-               //strokeWidth: 5.0,
-             backgroundColor: Colors.white,
-             )
+                  SpinKitFadingCircle(
+                color: Colors.white,
+                size: 40.0,
+              )
+//             CircularProgressIndicator(
+//               //strokeWidth: 5.0,
+//             backgroundColor: Colors.white,
+//             )
               )
               ,
             );
@@ -134,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         subtitle: Text(snapshot.data[index].book_lang),
                         trailing: GestureDetector(
-                          child: Icon(Icons.add),
+                          child: Icon(Icons.add,size: 31.0,),
                           onTap: () {
                             debugPrint("add button");
                             _addbook(snapshot.data[index].book_id);

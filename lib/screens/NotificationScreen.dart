@@ -21,16 +21,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Future<void> _getData() async {
     setState(() {
-     // _getNotificationData();
+      // _getNotificationData();
       Fluttertoast.showToast(msg: "Loading...");
-
     });
   }
 
   @override
   void initState() {
     super.initState();
- //   _getNotificationData();
+    //   _getNotificationData();
   }
 
   //open file link content
@@ -60,7 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notis.add(noti);
     }
     print(notis.length);
-     return notis;
+    return notis;
   }
 
   @override
@@ -74,7 +73,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: Container(
           child: RefreshIndicator(
         onRefresh: _getData,
-
         child: FutureBuilder(
           future: _getNotificationData(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -83,16 +81,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
             if (snapshot.data == null) {
               return Center(
                   child: Container(
-                      child:
-//                SpinKitThreeBounce(
-//                  color: Colors.white,
-//                  size: 40.0,
-//                ),
-                          CircularProgressIndicator(
-                backgroundColor: Colors.white,
-              )));
+                child: SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 40.0,
+                ),
+//                          CircularProgressIndicator(
+//                backgroundColor: Colors.white,
+//              )
+              ));
             } else {
               return ListView.builder(
+                  reverse: true,
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
