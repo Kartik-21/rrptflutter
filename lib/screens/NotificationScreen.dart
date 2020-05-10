@@ -59,7 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notis.add(noti);
     }
     print(notis.length);
-    return notis;
+    //  return notis;
   }
 
   @override
@@ -69,6 +69,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Notification"),
+        elevation: 5.0,
       ),
       body: Container(
           child: RefreshIndicator(
@@ -83,7 +84,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   child: Container(
                 child: SpinKitFadingCircle(
                   color: Colors.white,
-                  size: 40.0,
+                  size: 50.0,
                 ),
 //                          CircularProgressIndicator(
 //                backgroundColor: Colors.white,

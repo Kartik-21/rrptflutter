@@ -32,6 +32,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("About"),
+        elevation: 5.0,
       ),
       body: Container(
         child: Center(

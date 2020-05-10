@@ -11,6 +11,7 @@ import 'package:rrptflutter/screens/FavouriteScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -21,18 +22,8 @@ class DrawerHomeScreen extends StatefulWidget {
 }
 
 class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
-  SharedPreferences preferences;
-
-  getuserdata() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-  }
-
   @override
   Widget build(BuildContext context) {
-    Future<FirebaseUser> user = FirebaseAuth.instance.currentUser();
-    print(user);
-    //   String name = preferences.getString('name');
-    print("shred value $name");
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -102,10 +93,10 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
               title: Text("Logout"),
               trailing: Icon(Icons.arrow_right),
               leading: Icon(Icons.exit_to_app),
-              onTap: () async {
+              onTap: () {
                 Navigator.of(context).pop();
                 signOutGoogle();
-                Navigator.pop(context);
+                //  Navigator.pop(context);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) {
                   return LoginScreen();

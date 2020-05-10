@@ -8,6 +8,7 @@ import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,8 +22,18 @@ class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
 
+  var email1;
+  var name1;
+  var imgurl1;
+
   //get book related data from server
   Future<List<BookData>> _getBookData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    email1 = preferences.getString('email') ?? null;
+    name1 = preferences.getString('name') ?? null;
+    imgurl1 = preferences.getString('imageurl') ?? null;
+    print("shared email1 $email1");
+
     var i = UrlData();
     var url = i.GET_PDF_DATA;
     baseurl = UrlData.BASE_URL;
@@ -50,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _getData() async {
     setState(() {
-   //  _getBookData();
+      //  _getBookData();
       Fluttertoast.showToast(msg: "Loading...");
     });
   }
@@ -67,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
     var base = UrlData.BASE_URL;
     var url = i.ADD_PDF_TO_USER;
     print(url);
-    print(email);
+    print(email1);
     print(bid);
-    var data = {'email': email, 'bid': bid};
+    var data = {'email': email1, 'bid': bid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
     print(msg);
@@ -101,17 +112,15 @@ class _HomeScreenState extends State<HomeScreen> {
           if (snapshot.data == null) {
             return Container(
               child: Center(
-                  child:
-                  SpinKitFadingCircle(
+                  child: SpinKitFadingCircle(
                 color: Colors.white,
-                size: 40.0,
+                size: 50.0,
               )
 //             CircularProgressIndicator(
 //               //strokeWidth: 5.0,
 //             backgroundColor: Colors.white,
 //             )
-              )
-              ,
+                  ),
             );
           } else {
             return ListView.builder(
@@ -121,23 +130,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Card(
                     //  margin: EdgeInsets.all(10.0),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 1.0),
+                      padding: EdgeInsets.symmetric(vertical: 0.0),
                       child: ListTile(
                         leading: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child: Image.network(
-                              baseurl + snapshot.data[index].book_image_url,
+                            child: FadeInImage(
                               height: 60.0,
                               width: 85.0,
                               fit: BoxFit.cover,
-                            )),
+                              image: NetworkImage(baseurl +
+                                  snapshot.data[index].book_image_url),
+                              placeholder: AssetImage("assets/loading.png"),
+                            )
+//                            Image.network(
+//                              baseurl + snapshot.data[index].book_image_url,
+//                              height: 60.0,
+//                              width: 85.0,
+//                              fit: BoxFit.cover,
+//                            )
+
+                            ),
                         title: Text(
                           snapshot.data[index].book_title,
                           style: textStyle,
                         ),
                         subtitle: Text(snapshot.data[index].book_lang),
                         trailing: GestureDetector(
-                          child: Icon(Icons.add,size: 31.0,),
+                          child: Icon(
+                            Icons.add,
+                            size: 31.0,
+                          ),
                           onTap: () {
                             debugPrint("add button");
                             _addbook(snapshot.data[index].book_id);

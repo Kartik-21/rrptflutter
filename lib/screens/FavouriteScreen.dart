@@ -7,6 +7,7 @@ import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavouriteScreen extends StatefulWidget {
   @override
@@ -19,27 +20,34 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
 
+  var email1;
+  var name1;
+  var imgurl1;
+
   Future<void> _getData() async {
     setState(() {
-   //   _getUserBookData();
+      //   _getUserBookData();
       Fluttertoast.showToast(msg: "Loading...");
-
     });
   }
 
   @override
   void initState() {
     super.initState();
- //   _getUserBookData();
+    //   _getUserBookData();
   }
 
   //get userbook related data from server
   Future<List<UserBookData>> _getUserBookData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    email1 = preferences.getString('email') ?? null;
+    name1 = preferences.getString('name') ?? null;
+    imgurl1 = preferences.getString('imageurl') ?? null;
     var i = UrlData();
     var url = i.GET_USER_PDF_DATA;
     baseurl = UrlData.BASE_URL;
     print(url);
-    var data1 = {'email': email};
+    var data1 = {'email': email1};
     var result = await http.post(url, body: json.encode(data1));
     var data = json.decode(result.body);
     List<UserBookData> books = [];
@@ -87,11 +95,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Favourite"),
+          elevation: 5.0,
         ),
         body: Container(
             child: RefreshIndicator(
           onRefresh: _getData,
-
           child: FutureBuilder(
             future: _getUserBookData(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -109,7 +117,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       return Card(
                         //  margin: EdgeInsets.all(10.0),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 1.0),
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
                           child: ListTile(
                             leading: ClipRRect(
                                 borderRadius:
@@ -128,10 +136,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             trailing: GestureDetector(
                               child: Icon(Icons.delete),
                               onTap: () {
+                                _delbook(snapshot.data[index].user_book_id);
                                 setState(() {
                                   debugPrint("delete button");
-                                  _delbook(snapshot.data[index].user_book_id);
-                                 // _getUserBookData();
+                                  // _getUserBookData();
                                 });
                               },
                             ),
