@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -86,16 +84,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 50.0),
-                  child: SignInButton(
-                    Buttons.Apple,
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: "It is under Development");
-                    },
-                  ),
-                ),
+//                Padding(
+//                  padding:
+//                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 50.0),
+//                  child: SignInButton(
+//                    Buttons.Apple,
+//                    onPressed: () {
+//                      Fluttertoast.showToast(msg: "It is under Development");
+//                    },
+//                  ),
+//                ),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),

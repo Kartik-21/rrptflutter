@@ -59,7 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notis.add(noti);
     }
     print(notis.length);
-    //  return notis;
+    return notis;
   }
 
   @override
@@ -86,9 +86,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   color: Colors.white,
                   size: 50.0,
                 ),
-//                          CircularProgressIndicator(
-//                backgroundColor: Colors.white,
-//              )
               ));
             } else {
               return ListView.builder(
@@ -96,6 +93,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
+                      elevation: 4.0,
                       //  margin: EdgeInsets.all(10.0),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 5.0),

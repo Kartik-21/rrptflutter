@@ -19,10 +19,10 @@ class FavouriteScreen extends StatefulWidget {
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
-
   var email1;
-  var name1;
-  var imgurl1;
+
+//  var name1;
+//  var imgurl1;
 
   Future<void> _getData() async {
     setState(() {
@@ -41,8 +41,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   Future<List<UserBookData>> _getUserBookData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     email1 = preferences.getString('email') ?? null;
-    name1 = preferences.getString('name') ?? null;
-    imgurl1 = preferences.getString('imageurl') ?? null;
+//    name1 = preferences.getString('name') ?? null;
+//    imgurl1 = preferences.getString('imageurl') ?? null;
+
     var i = UrlData();
     var url = i.GET_USER_PDF_DATA;
     baseurl = UrlData.BASE_URL;
@@ -115,19 +116,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       //debugPrint(baseurl + snapshot.data[index].book_image_url);
                       return Card(
+                        elevation: 4.0,
                         //  margin: EdgeInsets.all(10.0),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                           child: ListTile(
                             leading: ClipRRect(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                child: Image.network(
-                                  baseurl + snapshot.data[index].book_image_url,
+                                BorderRadius.all(Radius.circular(5)),
+                                child: FadeInImage(
                                   height: 60.0,
                                   width: 85.0,
                                   fit: BoxFit.cover,
-                                )),
+                                  image: NetworkImage(baseurl +
+                                      snapshot.data[index].book_image_url),
+                                  placeholder: AssetImage("assets/loading.png"),
+                                )
+//                                Image.network(
+//                                  baseurl + snapshot.data[index].book_image_url,
+//                                  height: 60.0,
+//                                  width: 85.0,
+//                                  fit: BoxFit.cover,
+//                                )
+                            ),
                             title: Text(
                               snapshot.data[index].book_title,
                               style: textStyle,
@@ -144,8 +155,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               },
                             ),
                             onTap: () {
-                              _pdfurldata("$baseurl" +
-                                  snapshot.data[index].book_pdf_url);
+                              _pdfurldata(
+                                  baseurl + snapshot.data[index].book_pdf_url);
                             },
                           ),
                         ),

@@ -15,11 +15,10 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-
   _openfiledata(String ur) async {
     String url = ur;
     if (await canLaunch(url)) {
-    //  Fluttertoast.showToast(msg: "Opening File...");
+      //  Fluttertoast.showToast(msg: "Opening File...");
       await launch(url);
     } else {
       //Fluttertoast.showToast(msg: "Could't Open File");
@@ -41,11 +40,14 @@ class _AboutScreenState extends State<AboutScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Image.asset(
-                  "assets/icon/icon.png",
-                  height: 100.0,
-                  width: 100.0,
-                  fit: BoxFit.cover,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(7.0),
+                  child: Image.asset(
+                    "assets/icon/icon.png",
+                    height: 100.0,
+                    width: 100.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Padding(
                     padding: EdgeInsets.all(10.0),
@@ -65,7 +67,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     padding: EdgeInsets.only(top: 230.0),
                     child: Linkify(
                       text: "rrpt.books@gmail.com",
-                      onOpen: (link){
+                      onOpen: (link) {
                         _openfiledata('${link.url}');
                       },
                     )),

@@ -21,17 +21,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
-
   var email1;
-  var name1;
-  var imgurl1;
+
+//  var name1;
+//  var imgurl1;
 
   //get book related data from server
   Future<List<BookData>> _getBookData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     email1 = preferences.getString('email') ?? null;
-    name1 = preferences.getString('name') ?? null;
-    imgurl1 = preferences.getString('imageurl') ?? null;
+//    name1 = preferences.getString('name') ?? null;
+//    imgurl1 = preferences.getString('imageurl') ?? null;
     print("shared email1 $email1");
 
     var i = UrlData();
@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //add book to user favourite
   Future _addbook(String bid) async {
     var i = UrlData();
-    var base = UrlData.BASE_URL;
     var url = i.ADD_PDF_TO_USER;
     print(url);
     print(email1);
@@ -115,12 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
-              )
-//             CircularProgressIndicator(
-//               //strokeWidth: 5.0,
-//             backgroundColor: Colors.white,
-//             )
-                  ),
+                  )),
             );
           } else {
             return ListView.builder(
@@ -128,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   //debugPrint(baseurl + snapshot.data[index].book_image_url);
                   return Card(
+                    elevation: 4.0,
                     //  margin: EdgeInsets.all(10.0),
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 0.0),
@@ -148,8 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //                              width: 85.0,
 //                              fit: BoxFit.cover,
 //                            )
-
-                            ),
+                        ),
                         title: Text(
                           snapshot.data[index].book_title,
                           style: textStyle,

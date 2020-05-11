@@ -47,12 +47,12 @@ class FirstScreen extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
         if (snapshot.hasData) {
           FirebaseUser user = snapshot.data;
-          var name = user.displayName;
-          var email = user.email;
-          print(email);
-          print(name);
-          Fluttertoast.showToast(msg: name + " " + email);
-          print("main $user");
+//          var name = user.displayName;
+//          var email = user.email;
+//          print(email);
+//          print(name);
+          //   Fluttertoast.showToast(msg: name + " " + email);
+          //   print("main $user");
           return DrawerHomeScreen();
         } else {
           return LoginScreen();
