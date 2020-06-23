@@ -6,7 +6,6 @@ import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
 import 'package:rrptflutter/screens/FavouriteScreen.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/screens/NotificationScreen.dart';
-import 'package:rrptflutter/screens/SplashScreen.dart';
 import 'package:rrptflutter/screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';

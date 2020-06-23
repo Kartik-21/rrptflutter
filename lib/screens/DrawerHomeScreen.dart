@@ -48,6 +48,22 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                   appBar: AppBar(
                     title: Text("Home"),
                     elevation: 5.0,
+//                    actions: <Widget>[
+//                      PopupMenuButton(
+//                        icon: Icon(Icons.more_vert),
+//                        itemBuilder: (context) {
+//                          PopupMenuItem(
+//                              value: 1,
+//                              child: FlatButton(
+//                                child: Text("Exit"),
+//                                onPressed: () {
+//                                  Fluttertoast.showToast(msg: "Exit");
+//                                  dispose();
+//                                },
+//                              ));
+//                        },
+//                      ),
+//                    ],
                   ),
                   drawer: Drawer(
                     child: ListView(
@@ -94,6 +110,17 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
+                          title: Text("Rate us"),
+                          trailing: Icon(Icons.arrow_right),
+                          leading: Icon(Icons.rate_review),
+                          onTap: () {
+                            Navigator.of(context).pop();
+//                            Share.share(
+//                                'check out my application https://example.com');
+                            Fluttertoast.showToast(msg: "rate us");
+                          },
+                        ),
+                        ListTile(
                           title: Text("About"),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.info),
@@ -112,8 +139,8 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                             //  Navigator.pop(context);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) {
-                                  return LoginScreen();
-                                }), ModalRoute.withName('/login'));
+                              return LoginScreen();
+                            }), ModalRoute.withName('/login'));
                           },
                         )
                       ],

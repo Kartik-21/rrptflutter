@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SpinKitFadingCircle(
                 color: Colors.white,
                 size: 50.0,
-                  )),
+              )),
             );
           } else {
             return ListView.builder(

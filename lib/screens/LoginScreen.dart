@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SignInButton(
                     Buttons.GoogleDark,
                     onPressed: () async {
+                      //it is used when any exeption is not then "then" used.."then" not allowed any exeption
                       signInWithGoogle().then((String value) {
                         print(value);
                         Navigator.pop(context);

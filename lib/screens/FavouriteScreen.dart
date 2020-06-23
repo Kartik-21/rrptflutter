@@ -123,7 +123,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           child: ListTile(
                             leading: ClipRRect(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(5)),
+                                    BorderRadius.all(Radius.circular(5)),
                                 child: FadeInImage(
                                   height: 60.0,
                                   width: 85.0,
@@ -138,7 +138,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 //                                  width: 85.0,
 //                                  fit: BoxFit.cover,
 //                                )
-                            ),
+                                ),
                             title: Text(
                               snapshot.data[index].book_title,
                               style: textStyle,
