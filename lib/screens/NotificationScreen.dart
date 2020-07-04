@@ -19,12 +19,13 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
 
-  Future<void> _getData() async {
-    setState(() {
-      // _getNotificationData();
-      Fluttertoast.showToast(msg: "Loading...");
-    });
-  }
+//
+//  Future<void> _getData() async {
+//    setState(() {
+//      // _getNotificationData();
+//      Fluttertoast.showToast(msg: "Loading...");
+//    });
+//  }
 
   @override
   void initState() {
@@ -65,56 +66,52 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    TextStyle textStyle = Theme.of(context).textTheme.subhead;
+    TextStyle textStyle = Theme.of(context).textTheme.subtitle1;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Notification"),
-        elevation: 5.0,
-      ),
-      body: Container(
-          child: RefreshIndicator(
-        onRefresh: _getData,
-        child: FutureBuilder(
-          future: _getNotificationData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            // ignore: missing_return
-            //        print(snapshot.data.toString());
-            if (snapshot.data == null) {
-              return Center(
-                  child: Container(
-                child: SpinKitFadingCircle(
-                  color: Colors.white,
-                  size: 50.0,
-                ),
-              ));
-            } else {
-              return ListView.builder(
-                  reverse: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 4.0,
-                      //  margin: EdgeInsets.all(10.0),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                        child: ListTile(
-                          title: Linkify(
-                            text: snapshot.data[index].noti_name,
-                            onOpen: (link) {
-                              print('${link.url}');
-                              _openfiledata('${link.url}');
-                            },
-                            style: textStyle,
+        appBar: AppBar(
+          title: Text("Notification"),
+          elevation: 5.0,
+        ),
+        body: Container(
+          child: FutureBuilder(
+            future: _getNotificationData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //        print(snapshot.data.toString());
+              if (snapshot.data == null) {
+                return Center(
+                    child: Container(
+                  child: SpinKitFadingCircle(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                ));
+              } else {
+                return ListView.builder(
+                    reverse: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        elevation: 4.0,
+                        //  margin: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          child: ListTile(
+                            title: Linkify(
+                              text: snapshot.data[index].noti_name,
+                              onOpen: (link) {
+                                print('${link.url}');
+                                _openfiledata('${link.url}');
+                              },
+                              style: textStyle,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  });
-            }
-          },
-        ),
-      )),
-    );
+                      );
+                    });
+              }
+            },
+          ),
+        ));
   }
 }
 

@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -59,7 +56,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 Padding(
                     padding: EdgeInsets.all(0.0),
                     child: Text(
-                      "v 1.0.0",
+                      "v 1.1.0",
                       style: TextStyle(fontSize: 16.0),
                       textAlign: TextAlign.center,
                     )),

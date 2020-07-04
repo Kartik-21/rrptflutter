@@ -2,15 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:rrptflutter/screens/LoginScreen.dart';
-import 'dart:convert';
+
 import 'package:share/share.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
-import 'package:rrptflutter/screens/FavouriteScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
