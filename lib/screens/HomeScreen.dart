@@ -197,7 +197,8 @@ class BookData {
   String book_date;
   String a_id;
 
-  BookData(this.book_id,
+  BookData(
+      this.book_id,
       this.book_title,
       this.book_image_url,
       this.book_pdf_url,
@@ -208,7 +209,8 @@ class BookData {
       this.book_date,
       this.a_id);
 
-  BookData.allpdf(this.book_id,
+  BookData.allpdf(
+      this.book_id,
       this.book_title,
       this.book_image_url,
       this.book_pdf_url,

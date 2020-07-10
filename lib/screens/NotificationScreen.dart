@@ -84,18 +84,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
           elevation: 5.0,
         ),
         body: Container(
-          child: FutureBuilder(
-            future: _getNotificationData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //        print(snapshot.data.toString());
-              if (snapshot.data == null) {
-                return Center(
-                    child: Container(
-                  child: SpinKitFadingCircle(
-                    color: Colors.white,
-                    size: 50.0,
-                  ),
-                ));
+          height: MediaQuery.of(context).size.height -
+            60, //for banner for overlapping
+        child: FutureBuilder(
+          future: _getNotificationData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //        print(snapshot.data.toString());
+            if (snapshot.data == null) {
+              return Center(
+                  child: Container(
+                child: SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
+                    ));
               } else {
                 return ListView.builder(
                     reverse: true,
@@ -122,7 +124,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
               }
             },
           ),
-        ));
+        )
+      ,
+    );
   }
 }
 
