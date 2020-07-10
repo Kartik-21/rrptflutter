@@ -6,11 +6,11 @@ import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 class FavouriteScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _FavouriteScreenState();
   }
 }
@@ -21,6 +21,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
 //  var name1;
 //  var imgurl1;
+  InterstitialAd myInterstitial;
 
   Future<void> _getData() async {
     setState(() {
@@ -33,6 +34,17 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   void initState() {
     super.initState();
     //   _getUserBookData();
+    UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
+    myInterstitial = i.createInterstitialAd()
+      ..load()
+      ..show();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
   }
 
   //get userbook related data from server
@@ -88,7 +100,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     TextStyle textStyle = Theme.of(context).textTheme.button;
 
     return Scaffold(

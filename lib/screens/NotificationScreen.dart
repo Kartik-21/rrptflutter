@@ -7,17 +7,18 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _NotificationScreenState();
   }
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
+  InterstitialAd myInterstitial;
 
 //
 //  Future<void> _getData() async {
@@ -31,6 +32,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void initState() {
     super.initState();
     //   _getNotificationData();
+    UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
+    myInterstitial = i.createInterstitialAd()
+      ..load()
+      ..show();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
   }
 
   //open file link content
@@ -65,7 +77,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     TextStyle textStyle = Theme.of(context).textTheme.subtitle1;
     return Scaffold(
         appBar: AppBar(

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
 import 'package:rrptflutter/screens/LoginScreen.dart';
+import 'package:rrptflutter/utils/UrlData.dart';
 
 import 'package:share/share.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -22,6 +24,17 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   var email1;
   var name1;
   var imgurl1;
+  BannerAd myBanner;
+
+  @override
+  void initState() {
+    super.initState();
+    UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
+    myBanner = i.createBannerAd()
+      ..load()
+      ..show();
+  }
 
   Future _getAccountData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -151,5 +164,11 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                 );
               }
             }));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myBanner.dispose();
   }
 }

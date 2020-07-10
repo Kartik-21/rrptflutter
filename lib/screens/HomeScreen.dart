@@ -13,7 +13,6 @@ import 'package:firebase_admob/firebase_admob.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _HomeScreenState();
   }
 }
@@ -22,40 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
   var email1;
-
-  BannerAd myBanner;
-
   InterstitialAd myInterstitial;
-
-  BannerAd createBannerAd() {
-    return BannerAd(
-      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
-      adUnitId: "ca-app-pub-3940256099942544/6300978111", //test id
-      size: AdSize.banner,
-      // targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
-  }
-
-  InterstitialAd createInterstitialAd() {
-    return InterstitialAd(
-      // adUnitId: "ca-app-pub-3308779248747640/2651726336",  //id
-      adUnitId: "ca-app-pub-3940256099942544/8691691433", //test id
-      // targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event) {
-        print("InterstitialAd event is $event");
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    myBanner.dispose();
-    myInterstitial.dispose();
-  }
 
 //  var name1;
 //  var imgurl1;
@@ -104,12 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    FirebaseAdMob.instance
-        .initialize(appId: "ca-app-pub-3308779248747640~6075966022");
-    myBanner = createBannerAd()
+    UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
+    myInterstitial = i.createInterstitialAd()
       ..load()
       ..show();
     _getBookData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
   }
 
   //add book to user favourite
@@ -139,48 +111,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme
-        .of(context)
-        .textTheme
-        .button;
-    // TODO: implement build
+    TextStyle textStyle = Theme.of(context).textTheme.button;
     return Container(
         child: RefreshIndicator(
-          onRefresh: _getData,
-          child: FutureBuilder(
-            future: _getBookData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //    print(snapshot.data.toString());
-              if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                      child: SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: 50.0,
-                      )),
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                      return Card(
-                        elevation: 4.0,
-                        //  margin: EdgeInsets.all(10.0),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 0.0),
-                          child: ListTile(
-                            leading: ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(5)),
-                                child: FadeInImage(
-                                  height: 60.0,
-                                  width: 85.0,
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(baseurl +
-                                      snapshot.data[index].book_image_url),
-                                  placeholder: AssetImage("assets/loading.png"),
-                                )
+      onRefresh: _getData,
+      child: FutureBuilder(
+        future: _getBookData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //    print(snapshot.data.toString());
+          if (snapshot.data == null) {
+            return Container(
+              child: Center(
+                  child: SpinKitFadingCircle(
+                color: Colors.white,
+                size: 50.0,
+              )),
+            );
+          } else {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                  return Card(
+                    elevation: 4.0,
+                    //  margin: EdgeInsets.all(10.0),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 0.0),
+                      child: ListTile(
+                        leading: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            child: FadeInImage(
+                              height: 60.0,
+                              width: 85.0,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(baseurl +
+                                  snapshot.data[index].book_image_url),
+                              placeholder: AssetImage("assets/loading.png"),
+                            )
 //                            Image.network(
 //                              baseurl + snapshot.data[index].book_image_url,
 //                              height: 60.0,
@@ -188,37 +155,33 @@ class _HomeScreenState extends State<HomeScreen> {
 //                              fit: BoxFit.cover,
 //                            )
                             ),
-                            title: Text(
-                              snapshot.data[index].book_title,
-                              style: textStyle,
-                            ),
-                            subtitle: Text(snapshot.data[index].book_lang),
-                            trailing: GestureDetector(
-                              child: Icon(
-                                Icons.add,
-                                size: 31.0,
-                              ),
-                              onTap: () {
-                                debugPrint("add button");
-                                _addbook(snapshot.data[index].book_id);
-                              },
-                            ),
-                            onTap: () {
-                              myInterstitial = createInterstitialAd()
-                                ..load()
-                                ..show();
-                              _pdfurldata(
-                                  "$baseurl" +
-                                      snapshot.data[index].book_pdf_url);
-                            },
-                          ),
+                        title: Text(
+                          snapshot.data[index].book_title,
+                          style: textStyle,
                         ),
-                      );
-                    });
-              }
-            },
-          ),
-        ));
+                        subtitle: Text(snapshot.data[index].book_lang),
+                        trailing: GestureDetector(
+                          child: Icon(
+                            Icons.add,
+                            size: 31.0,
+                          ),
+                          onTap: () {
+                            debugPrint("add button");
+                            _addbook(snapshot.data[index].book_id);
+                          },
+                        ),
+                        onTap: () {
+                          _pdfurldata(
+                              "$baseurl" + snapshot.data[index].book_pdf_url);
+                        },
+                      ),
+                    ),
+                  );
+                });
+          }
+        },
+      ),
+    ));
   }
 }
 

@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _AboutScreenState();
   }
 }
@@ -24,7 +23,6 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("About"),
