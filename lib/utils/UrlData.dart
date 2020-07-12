@@ -3,8 +3,10 @@ import 'dart:io' show Platform;
 
 class UrlData {
   //static final String BASE_URL = "http://192.168.42.81/rrptflutteradmin/rrptflutter/";
+//  static final String BASE_URL =
+//      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";
   static final String BASE_URL =
-      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";
+      "http://rrptbooks.atwebpages.com/rrptflutteradmin/rrptflutter/";
   final String GET_PDF_DATA = BASE_URL + "getpdfdata.php";
   final String GET_NOTI_DATA = BASE_URL + "getnotidata.php";
   final String SENT_LOGIN_DATA = BASE_URL + "sentlogindata.php";
@@ -20,6 +22,7 @@ class UrlData {
     } else if (Platform.isIOS) {
       return "ca-app-pub-3940256099942544/8691691433"; //test id video
     }
+    return "ca-app-pub-3940256099942544/1033173712"; // test id image
   }
 
   String checkPlatefromForBannerAd() {
@@ -28,6 +31,7 @@ class UrlData {
     } else if (Platform.isIOS) {
       return "ca-app-pub-3940256099942544/1033173712"; // test id banner
     }
+    return "ca-app-pub-3940256099942544/6300978111"; //test id banner
   }
 
   InterstitialAd createInterstitialAd() {

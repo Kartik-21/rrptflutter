@@ -15,7 +15,6 @@ import 'package:firebase_admob/firebase_admob.dart';
 class DrawerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _DrawerHomeScreenState();
   }
 }
@@ -31,9 +30,9 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
     super.initState();
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myBanner = i.createBannerAd()
-      ..load()
-      ..show();
+//    myBanner = i.createBannerAd()
+//      ..load()
+//      ..show();
   }
 
   Future _getAccountData() async {
@@ -46,7 +45,6 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
         child: FutureBuilder(
             future: _getAccountData(),

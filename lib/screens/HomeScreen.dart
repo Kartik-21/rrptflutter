@@ -72,9 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
-      ..load()
-      ..show();
+//    myInterstitial = i.createInterstitialAd()
+//      ..load()
+//      ..show();
     _getBookData();
   }
 

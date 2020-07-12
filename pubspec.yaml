@@ -31,7 +31,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter_launcher_name:
-  name: "rrptflutter"
+  name: "Raj Rajedra Prakashan Trust"
 
 flutter_icons:
   android: "launcher_icon"

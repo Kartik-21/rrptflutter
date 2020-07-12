@@ -36,9 +36,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     //   _getUserBookData();
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
-      ..load()
-      ..show();
+//    myInterstitial = i.createInterstitialAd()
+//      ..load()
+//      ..show();
   }
 
   @override

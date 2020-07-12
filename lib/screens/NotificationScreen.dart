@@ -34,9 +34,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     //   _getNotificationData();
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
-      ..load()
-      ..show();
+//    myInterstitial = i.createInterstitialAd()
+//      ..load()
+//      ..show();
   }
 
   @override

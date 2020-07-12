@@ -92,16 +92,16 @@ class _LoginScreenState extends State<LoginScreen> {
 //                    },
 //                  ),
 //                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
-                  child: SignInButton(
-                    Buttons.Email,
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: "It is under Development");
-                    },
-                  ),
-                ),
+//                Padding(
+//                  padding:
+//                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
+//                  child: SignInButton(
+//                    Buttons.Email,
+//                    onPressed: () {
+//                      Fluttertoast.showToast(msg: "It is under Development");
+//                    },
+//                  ),
+//                ),
                 Divider(),
               ],
             ),
