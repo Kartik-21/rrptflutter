@@ -14,7 +14,7 @@ class UrlData {
   final String ADD_PDF_TO_USER = BASE_URL + "addpdftouser.php";
   final String DEL_PDF_TO_USER = BASE_URL + "delpdftouser.php";
 
-  final String myAppIdForAds = "ca-app-pub-3308779248747640~6075966022"; //appid
+  final String myAppIdForAds = "ca-app-pub-4833612091218866~5375970321"; //appid
 
   String checkPlatefromForInterstitialAd() {
     if (Platform.isAndroid) {
@@ -22,7 +22,7 @@ class UrlData {
     } else if (Platform.isIOS) {
       return "ca-app-pub-3940256099942544/8691691433"; //test id video
     }
-    return "ca-app-pub-3940256099942544/1033173712"; // test id image
+    return null;
   }
 
   String checkPlatefromForBannerAd() {
@@ -31,7 +31,7 @@ class UrlData {
     } else if (Platform.isIOS) {
       return "ca-app-pub-3940256099942544/1033173712"; // test id banner
     }
-    return "ca-app-pub-3940256099942544/6300978111"; //test id banner
+    return null;
   }
 
   InterstitialAd createInterstitialAd() {
@@ -45,15 +45,15 @@ class UrlData {
     );
   }
 
-  BannerAd createBannerAd() {
-    return BannerAd(
-      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
-      adUnitId: checkPlatefromForBannerAd(), //test id
-      size: AdSize.banner,
-      // targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event) {
-        print("BannerAd event is $event");
-      },
-    );
-  }
+//  BannerAd createBannerAd() {
+//    return BannerAd(
+//      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
+//      adUnitId: checkPlatefromForBannerAd(), //test id
+//      size: AdSize.fullBanner,  //size=60.0
+//      // targetingInfo: targetingInfo,
+//      listener: (MobileAdEvent event) {
+//        print("BannerAd event is $event");
+//      },
+//    );
+//  }
 }

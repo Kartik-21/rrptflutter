@@ -18,10 +18,30 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
   var email1;
+  var ii = UrlData();
+  var bottomPadding = 60.0;
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
+      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      size: AdSize.banner, //size=60.0
+      // targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.failedToLoad) {
+          setState(() {
+            bottomPadding = 0.0;
+          });
+        }
+        print("BannerAd event is $event");
+      },
+    );
+  }
 
 //  var name1;
 //  var imgurl1;
   InterstitialAd myInterstitial;
+  BannerAd myBanner;
 
   Future<void> _getData() async {
     setState(() {
@@ -36,15 +56,22 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     //   _getUserBookData();
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-//    myInterstitial = i.createInterstitialAd()
-//      ..load()
-//      ..show();
+    myInterstitial = i.createInterstitialAd()
+      ..load()
+      ..show();
+
+    myBanner = createBannerAd()
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+      );
   }
 
   @override
   void dispose() {
     super.dispose();
     myInterstitial.dispose();
+    myBanner.dispose();
   }
 
   //get userbook related data from server
@@ -107,74 +134,78 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           title: Text("Favourite"),
           elevation: 5.0,
         ),
-        body: Container(
-            child: RefreshIndicator(
-          onRefresh: _getData,
-          child: FutureBuilder(
-            future: _getUserBookData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //  print(snapshot.data.toString());
-              if (snapshot.data == null) {
-                return Container(
-                  height: 0.0,
-                  width: 0.0,
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                      return Card(
-                        elevation: 4.0,
-                        //  margin: EdgeInsets.all(10.0),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                          child: ListTile(
-                            leading: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                child: FadeInImage(
-                                  height: 60.0,
-                                  width: 85.0,
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(baseurl +
-                                      snapshot.data[index].book_image_url),
-                                  placeholder: AssetImage("assets/loading.png"),
-                                )
+        body: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: Container(
+              child: RefreshIndicator(
+            onRefresh: _getData,
+            child: FutureBuilder(
+              future: _getUserBookData(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //  print(snapshot.data.toString());
+                if (snapshot.data == null) {
+                  return Container(
+                    height: 0.0,
+                    width: 0.0,
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                        return Card(
+                          elevation: 4.0,
+                          //  margin: EdgeInsets.all(10.0),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.0),
+                            child: ListTile(
+                              leading: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  child: FadeInImage(
+                                    height: 60.0,
+                                    width: 85.0,
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(baseurl +
+                                        snapshot.data[index].book_image_url),
+                                    placeholder:
+                                        AssetImage("assets/loading.gif"),
+                                  )
 //                                Image.network(
 //                                  baseurl + snapshot.data[index].book_image_url,
 //                                  height: 60.0,
 //                                  width: 85.0,
 //                                  fit: BoxFit.cover,
 //                                )
-                                ),
-                            title: Text(
-                              snapshot.data[index].book_title,
-                              style: textStyle,
-                            ),
-                            //   subtitle: Text(snapshot.data[index].book_lang),
-                            trailing: GestureDetector(
-                              child: Icon(Icons.delete),
+                                  ),
+                              title: Text(
+                                snapshot.data[index].book_title,
+                                style: textStyle,
+                              ),
+                              //   subtitle: Text(snapshot.data[index].book_lang),
+                              trailing: GestureDetector(
+                                child: Icon(Icons.delete),
+                                onTap: () {
+                                  _delbook(snapshot.data[index].user_book_id);
+                                  setState(() {
+                                    debugPrint("delete button");
+                                    // _getUserBookData();
+                                  });
+                                },
+                              ),
                               onTap: () {
-                                _delbook(snapshot.data[index].user_book_id);
-                                setState(() {
-                                  debugPrint("delete button");
-                                  // _getUserBookData();
-                                });
+                                _pdfurldata(baseurl +
+                                    snapshot.data[index].book_pdf_url);
                               },
                             ),
-                            onTap: () {
-                              _pdfurldata(
-                                  baseurl + snapshot.data[index].book_pdf_url);
-                            },
                           ),
-                        ),
-                      );
-                    });
-              }
-            },
-          ),
-        )));
+                        );
+                      });
+                }
+              },
+            ),
+          )),
+        ));
   }
 }
 

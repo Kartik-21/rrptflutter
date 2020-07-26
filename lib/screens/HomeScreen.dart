@@ -22,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   var pdfurl;
   var email1;
   InterstitialAd myInterstitial;
+  BannerAd myBanner;
+  var ii = UrlData();
+  var bottomPadding = 60.0;
 
 //  var name1;
 //  var imgurl1;
@@ -66,22 +69,46 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  BannerAd createBannerAd() {
+    return BannerAd(
+      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
+      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      size: AdSize.banner, //size=60.0
+      // targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.failedToLoad) {
+          setState(() {
+            bottomPadding = 0.0;
+          });
+        }
+        print("BannerAd event is $event");
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
 
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-//    myInterstitial = i.createInterstitialAd()
-//      ..load()
-//      ..show();
-    _getBookData();
+    myInterstitial = i.createInterstitialAd()
+      ..load()
+      ..show();
+    myBanner = createBannerAd()
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+      );
+
+//    _getBookData();
   }
 
   @override
   void dispose() {
     super.dispose();
     myInterstitial.dispose();
+    myBanner.dispose();
   }
 
   //add book to user favourite
@@ -112,76 +139,82 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.button;
-    return Container(
-        child: RefreshIndicator(
-      onRefresh: _getData,
-      child: FutureBuilder(
-        future: _getBookData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //    print(snapshot.data.toString());
-          if (snapshot.data == null) {
-            return Container(
-              child: Center(
-                  child: SpinKitFadingCircle(
-                color: Colors.white,
-                size: 50.0,
-              )),
-            );
-          } else {
-            return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                  return Card(
-                    elevation: 4.0,
-                    //  margin: EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0.0),
-                      child: ListTile(
-                        leading: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child: FadeInImage(
-                              height: 60.0,
-                              width: 85.0,
-                              fit: BoxFit.cover,
-                              image: NetworkImage(baseurl +
-                                  snapshot.data[index].book_image_url),
-                              placeholder: AssetImage("assets/loading.png"),
-                            )
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: Container(
+          child: RefreshIndicator(
+        onRefresh: _getData,
+        child: FutureBuilder(
+          future: _getBookData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //    print(snapshot.data.toString());
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                    child: SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 60.0,
+                )),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                    return Card(
+                      elevation: 4.0,
+                      //  margin: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0.0),
+                        child: ListTile(
+                          leading: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              child: FadeInImage(
+                                height: 60.0,
+                                width: 85.0,
+                                fit: BoxFit.cover,
+                                image: NetworkImage(baseurl +
+                                    snapshot.data[index].book_image_url),
+                                placeholder: AssetImage(
+                                  "assets/loading.gif",
+                                ),
+                              )
 //                            Image.network(
 //                              baseurl + snapshot.data[index].book_image_url,
 //                              height: 60.0,
 //                              width: 85.0,
 //                              fit: BoxFit.cover,
 //                            )
+                              ),
+                          title: Text(
+                            snapshot.data[index].book_title,
+                            style: textStyle,
+                          ),
+                          subtitle: Text(snapshot.data[index].book_lang),
+                          trailing: GestureDetector(
+                            child: Icon(
+                              Icons.add,
+                              size: 31.0,
                             ),
-                        title: Text(
-                          snapshot.data[index].book_title,
-                          style: textStyle,
-                        ),
-                        subtitle: Text(snapshot.data[index].book_lang),
-                        trailing: GestureDetector(
-                          child: Icon(
-                            Icons.add,
-                            size: 31.0,
+                            onTap: () {
+                              debugPrint("add button");
+                              _addbook(snapshot.data[index].book_id);
+                            },
                           ),
                           onTap: () {
-                            debugPrint("add button");
-                            _addbook(snapshot.data[index].book_id);
+                            _pdfurldata(
+                                "$baseurl" + snapshot.data[index].book_pdf_url);
                           },
                         ),
-                        onTap: () {
-                          _pdfurldata(
-                              "$baseurl" + snapshot.data[index].book_pdf_url);
-                        },
                       ),
-                    ),
-                  );
-                });
-          }
-        },
-      ),
-    ));
+                    );
+                  });
+            }
+          },
+        ),
+      )),
+    );
   }
 }
 

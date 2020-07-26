@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
 import 'package:rrptflutter/screens/LoginScreen.dart';
 import 'package:rrptflutter/utils/UrlData.dart';
-
 import 'package:share/share.dart';
 import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
@@ -23,7 +22,8 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   var email1;
   var name1;
   var imgurl1;
-  BannerAd myBanner;
+
+  //BannerAd myBanner;
 
   @override
   void initState() {
@@ -32,7 +32,9 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
 //    myBanner = i.createBannerAd()
 //      ..load()
-//      ..show();
+//      ..show(
+//        anchorType: AnchorType.bottom,
+//      );
   }
 
   Future _getAccountData() async {
@@ -167,6 +169,6 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    //myBanner.dispose();
   }
 }

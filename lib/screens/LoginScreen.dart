@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
-        elevation: 5.0,
+        elevation: 5.0, centerTitle: true,
         //   centerTitle: true,
       ),
       body: Container(
@@ -57,7 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 18.0, fontFamily: 'nunito'),
                   ),
                 ),
-                Divider(),
+                Divider(
+                  indent: 40.0,
+                  endIndent: 40.0,
+                  thickness: 2,
+                ),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 5.0, horizontal: 00.0),
@@ -102,7 +106,11 @@ class _LoginScreenState extends State<LoginScreen> {
 //                    },
 //                  ),
 //                ),
-                Divider(),
+                Divider(
+                  indent: 40.0,
+                  endIndent: 40.0,
+                  thickness: 2,
+                ),
               ],
             ),
           ),

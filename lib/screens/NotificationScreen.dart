@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,26 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
   InterstitialAd myInterstitial;
+  var ii = UrlData();
+  BannerAd myBanner;
+  var bottomPadding = 60.0;
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+      //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
+      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      size: AdSize.banner, //size=60.0
+      // targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.failedToLoad) {
+          setState(() {
+            bottomPadding = 0.0;
+          });
+        }
+        print("BannerAd event is $event");
+      },
+    );
+  }
 
 //
 //  Future<void> _getData() async {
@@ -34,15 +55,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     //   _getNotificationData();
     UrlData i = UrlData();
     FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-//    myInterstitial = i.createInterstitialAd()
-//      ..load()
-//      ..show();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    myInterstitial.dispose();
+    myInterstitial = i.createInterstitialAd()
+      ..load()
+      ..show();
+    myBanner = createBannerAd()
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+      );
   }
 
   //open file link content
@@ -67,7 +87,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     List<NotificationData> notis = [];
     for (var i in data) {
       var noti =
-          NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
+      NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
       // debugPrint(noti.toString());
       notis.add(noti);
     }
@@ -79,25 +99,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.subtitle1;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Notification"),
-          elevation: 5.0,
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height -
-            60, //for banner for overlapping
-        child: FutureBuilder(
-          future: _getNotificationData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //        print(snapshot.data.toString());
-            if (snapshot.data == null) {
-              return Center(
-                  child: Container(
-                child: SpinKitFadingCircle(
-                  color: Colors.white,
-                  size: 50.0,
-                ),
-                    ));
+      appBar: AppBar(
+        title: Text("Notification"),
+        elevation: 5.0,
+      ),
+      body: Padding(
+        padding: EdgeInsets.only(bottom: bottomPadding),
+        child: Container(
+//          height: MediaQuery.of(context).size.height -
+//            60, //for banner for overlapping
+          child: FutureBuilder(
+            future: _getNotificationData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //        print(snapshot.data.toString());
+              if (snapshot.data == null) {
+                return Center(
+                    child: Container(
+                  child: SpinKitFadingCircle(
+                    color: Colors.white,
+                    size: 60.0,
+                  ),
+                ));
               } else {
                 return ListView.builder(
                     reverse: true,
@@ -124,9 +146,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
               }
             },
           ),
-        )
-      ,
+        ),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
+    myBanner.dispose();
   }
 }
 
