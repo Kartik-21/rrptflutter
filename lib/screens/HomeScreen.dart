@@ -20,26 +20,26 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
-  var email1;
+  var sharedEmail;
+
+//  var sharedName;
+//  var sharedImgUrl;
   InterstitialAd myInterstitial;
   BannerAd myBanner;
   var ii = UrlData();
   var bottomPadding = 60.0;
 
-//  var name1;
-//  var imgurl1;
-
   //get book related data from server
   Future<List<BookData>> _getBookData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    email1 = preferences.getString('email') ?? null;
-//    name1 = preferences.getString('name') ?? null;
-//    imgurl1 = preferences.getString('imageurl') ?? null;
-    print("shared email1 $email1");
+    sharedEmail = preferences.getString('email') ?? null;
+//    sharedName = preferences.getString('name') ?? null;
+//    sharedImgUrl = preferences.getString('imageurl') ?? null;
+    print("shared email1 $sharedEmail");
 
-    var i = UrlData();
-    var url = i.GET_PDF_DATA;
-    baseurl = UrlData.BASE_URL;
+    //  var i = UrlData();
+    var url = ii.getPdfData;
+    baseurl = UrlData.baseUrlOfServer;
     print(url);
     var result = await http.get(url);
     var data = json.decode(result.body);
@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
       adUnitId: ii.checkPlatefromForBannerAd(), //test id
       size: AdSize.banner, //size=60.0
-      // targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.failedToLoad) {
           setState(() {
@@ -86,39 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
-      ..load()
-      ..show();
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
-
-//    _getBookData();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
-  }
-
   //add book to user favourite
   Future _addbook(String bid) async {
-    var i = UrlData();
-    var url = i.ADD_PDF_TO_USER;
+    // var i = UrlData();
+    var url = ii.addPdfToUser;
     print(url);
-    print(email1);
+    print(sharedEmail);
     print(bid);
-    var data = {'email': email1, 'bid': bid};
+    var data = {'email': sharedEmail, 'bid': bid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
     print(msg);
@@ -134,6 +108,22 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       Fluttertoast.showToast(msg: "Could't Open File");
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
+    myInterstitial = ii.createInterstitialAd()
+      ..load()
+      ..show();
+    myBanner = createBannerAd()
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+      );
+//    _getBookData();
   }
 
   @override
@@ -169,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListTile(
                           leading: ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                              BorderRadius.all(Radius.circular(5)),
                               child: FadeInImage(
                                 height: 60.0,
                                 width: 85.0,
@@ -177,16 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 image: NetworkImage(baseurl +
                                     snapshot.data[index].book_image_url),
                                 placeholder: AssetImage(
-                                  "assets/loading.gif",
+                                  "assets/loading1.gif",
                                 ),
-                              )
-//                            Image.network(
-//                              baseurl + snapshot.data[index].book_image_url,
-//                              height: 60.0,
-//                              width: 85.0,
-//                              fit: BoxFit.cover,
-//                            )
-                              ),
+                              )),
                           title: Text(
                             snapshot.data[index].book_title,
                             style: textStyle,
@@ -212,9 +195,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
             }
           },
-        ),
-      )),
+            ),
+          )),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
+    myBanner.dispose();
   }
 }
 

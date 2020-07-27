@@ -17,16 +17,20 @@ class FavouriteScreen extends StatefulWidget {
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
-  var email1;
+  var sharedEmail;
   var ii = UrlData();
   var bottomPadding = 60.0;
+
+  //  var sharedEmail;
+//  var sharedImgUrl;
+  InterstitialAd myInterstitial;
+  BannerAd myBanner;
 
   BannerAd createBannerAd() {
     return BannerAd(
       //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
       adUnitId: ii.checkPlatefromForBannerAd(), //test id
       size: AdSize.banner, //size=60.0
-      // targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.failedToLoad) {
           setState(() {
@@ -37,11 +41,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       },
     );
   }
-
-//  var name1;
-//  var imgurl1;
-  InterstitialAd myInterstitial;
-  BannerAd myBanner;
 
   Future<void> _getData() async {
     setState(() {
@@ -54,9 +53,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   void initState() {
     super.initState();
     //   _getUserBookData();
-    UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
+    //UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
+    myInterstitial = ii.createInterstitialAd()
       ..load()
       ..show();
 
@@ -67,25 +66,18 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
-  }
-
   //get userbook related data from server
   Future<List<UserBookData>> _getUserBookData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    email1 = preferences.getString('email') ?? null;
+    sharedEmail = preferences.getString('email') ?? null;
 //    name1 = preferences.getString('name') ?? null;
 //    imgurl1 = preferences.getString('imageurl') ?? null;
 
-    var i = UrlData();
-    var url = i.GET_USER_PDF_DATA;
-    baseurl = UrlData.BASE_URL;
+    //var i = UrlData();
+    var url = ii.getUserPdfData;
+    baseurl = UrlData.baseUrlOfServer;
     print(url);
-    var data1 = {'email': email1};
+    var data1 = {'email': sharedEmail};
     var result = await http.post(url, body: json.encode(data1));
     var data = json.decode(result.body);
     List<UserBookData> books = [];
@@ -115,9 +107,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   //delete book to user favourite
   Future _delbook(String ubid) async {
-    var i = UrlData();
-    // var base = UrlData.BASE_URL;
-    var url = i.DEL_PDF_TO_USER;
+    //var i = UrlData();
+    var url = ii.delPdfToUser;
     var data = {'ubid': ubid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
@@ -170,14 +161,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                         snapshot.data[index].book_image_url),
                                     placeholder:
                                         AssetImage("assets/loading.gif"),
-                                  )
-//                                Image.network(
-//                                  baseurl + snapshot.data[index].book_image_url,
-//                                  height: 60.0,
-//                                  width: 85.0,
-//                                  fit: BoxFit.cover,
-//                                )
-                                  ),
+                                  )),
                               title: Text(
                                 snapshot.data[index].book_title,
                                 style: textStyle,
@@ -204,8 +188,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 }
               },
             ),
-          )),
+              )),
         ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myInterstitial.dispose();
+    myBanner.dispose();
   }
 }
 

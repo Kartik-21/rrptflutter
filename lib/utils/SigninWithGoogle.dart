@@ -18,7 +18,7 @@ Future<String> signInWithGoogle() async {
 
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
-  await googleSignInAccount.authentication;
+      await googleSignInAccount.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.getCredential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -60,16 +60,9 @@ void signOutGoogle() async {
   print("Sign Out");
 }
 
-//adduserdata() async {
-//  SharedPreferences preferences = await SharedPreferences.getInstance();
-//  preferences.setString("name", name);
-//  preferences.setString("email", email);
-//  preferences.setString("imageurl", imageUrl);
-//}
-
 Future _sentLoginData(FirebaseUser user) async {
   var i = UrlData();
-  var url = i.SENT_LOGIN_DATA;
+  var url = i.sentLoginData;
   print(url);
   print(user);
   print(user.email);
@@ -79,7 +72,3 @@ Future _sentLoginData(FirebaseUser user) async {
   print("login $msg");
 //  Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
 }
-
-//getuserdata() async {
-//  SharedPreferences preferences = await SharedPreferences.getInstance();
-//}

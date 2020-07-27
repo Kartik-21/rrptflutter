@@ -5,14 +5,14 @@ class UrlData {
   //static final String BASE_URL = "http://192.168.42.81/rrptflutteradmin/rrptflutter/";
 //  static final String BASE_URL =
 //      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";
-  static final String BASE_URL =
+  static final String baseUrlOfServer =
       "http://rrptbooks.atwebpages.com/rrptflutteradmin/rrptflutter/";
-  final String GET_PDF_DATA = BASE_URL + "getpdfdata.php";
-  final String GET_NOTI_DATA = BASE_URL + "getnotidata.php";
-  final String SENT_LOGIN_DATA = BASE_URL + "sentlogindata.php";
-  final String GET_USER_PDF_DATA = BASE_URL + "getuserpdfdata.php";
-  final String ADD_PDF_TO_USER = BASE_URL + "addpdftouser.php";
-  final String DEL_PDF_TO_USER = BASE_URL + "delpdftouser.php";
+  final String getPdfData = baseUrlOfServer + "getpdfdata.php";
+  final String getNotiData = baseUrlOfServer + "getnotidata.php";
+  final String sentLoginData = baseUrlOfServer + "sentlogindata.php";
+  final String getUserPdfData = baseUrlOfServer + "getuserpdfdata.php";
+  final String addPdfToUser = baseUrlOfServer + "addpdftouser.php";
+  final String delPdfToUser = baseUrlOfServer + "delpdftouser.php";
 
   final String myAppIdForAds = "ca-app-pub-4833612091218866~5375970321"; //appid
 

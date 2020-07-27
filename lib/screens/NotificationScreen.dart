@@ -53,9 +53,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void initState() {
     super.initState();
     //   _getNotificationData();
-    UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: i.myAppIdForAds);
-    myInterstitial = i.createInterstitialAd()
+    // UrlData i = UrlData();
+    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
+    myInterstitial = ii.createInterstitialAd()
       ..load()
       ..show();
     myBanner = createBannerAd()
@@ -78,17 +78,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   //get notification related data from server
   Future<List<NotificationData>> _getNotificationData() async {
-    var i1 = UrlData();
-    var url = i1.GET_NOTI_DATA;
-    baseurl = UrlData.BASE_URL;
+    // var i1 = UrlData();
+    var url = ii.getNotiData;
+    baseurl = UrlData.baseUrlOfServer;
     print(url);
     var result = await http.get(url);
     var data = json.decode(result.body);
     List<NotificationData> notis = [];
     for (var i in data) {
       var noti =
-      NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
-      // debugPrint(noti.toString());
+          NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
       notis.add(noti);
     }
     print(notis.length);
@@ -106,8 +105,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: Padding(
         padding: EdgeInsets.only(bottom: bottomPadding),
         child: Container(
-//          height: MediaQuery.of(context).size.height -
-//            60, //for banner for overlapping
           child: FutureBuilder(
             future: _getNotificationData(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
