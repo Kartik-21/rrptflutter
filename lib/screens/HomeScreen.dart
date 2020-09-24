@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/model/bookdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -38,29 +39,28 @@ class _HomeScreenState extends State<HomeScreen> {
 //    sharedImgUrl = preferences.getString('imageurl') ?? null;
     print("shared email1 $sharedEmail");
 
-    //  var i = UrlData();
-    var url = ii.getPdfData;
-    baseurl = UrlData.baseUrlOfServer;
-    print(url);
-    var result = await http.get(url);
-    var data = json.decode(result.body);
+    try {
+      var url = ii.getPdfData;
+      baseurl = UrlData.baseUrlOfServer;
+      print(url);
+      var responce = await http.get(url);
 
-    List<BookData> books = [];
-
-    for (var i in data) {
-      var book = BookData.allpdf(
-          i["book_id"],
-          i["book_title"],
-          i["book_image_url"],
-          i["book_pdf_url"],
-          i["book_lang"],
-          i["book_page"],
-          i["book_year"],
-          i["book_author"]);
-      books.add(book);
+      if (200 == responce.statusCode) {
+        print("url found");
+        print(responce.body);
+        //    var data = json.decode(result.body);
+        //    print(data);
+        List<BookData> list = bookDataFromJson(responce.body).toList();
+        print(list.length);
+        return list;
+      } else {
+        print("data error");
+        return List<BookData>();
+      }
+    } catch (e) {
+      print(e.message);
+      return List<BookData>();
     }
-    print(books.length);
-    return books;
   }
 
   Future<void> _getData() async {
@@ -174,16 +174,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 85.0,
                                   fit: BoxFit.cover,
                                   image: NetworkImage(baseurl +
-                                      snapshot.data[index].book_image_url),
+                                      snapshot.data[index].bookImageUrl),
                                   placeholder: AssetImage(
                                     "assets/loading1.gif",
                                   ),
                                 )),
                             title: Text(
-                              snapshot.data[index].book_title,
+                              snapshot.data[index].bookTitle,
                               style: textStyle,
                             ),
-                            subtitle: Text(snapshot.data[index].book_lang),
+                            subtitle: Text(snapshot.data[index].bookLang),
                             trailing: GestureDetector(
                               child: Icon(
                                 Icons.add,
@@ -191,12 +191,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               onTap: () {
                                 debugPrint("add button");
-                                _addbook(snapshot.data[index].book_id);
+                                _addbook(snapshot.data[index].bookId);
                               },
                             ),
                             onTap: () {
-                              _pdfurldata("$baseurl" +
-                                  snapshot.data[index].book_pdf_url);
+                              _pdfurldata(
+                                  "$baseurl" + snapshot.data[index].bookPdfUrl);
                             },
                           ),
                         ),
@@ -216,39 +216,4 @@ class _HomeScreenState extends State<HomeScreen> {
     myInterstitial.dispose();
     myBanner.dispose();
   }
-}
-
-class BookData {
-  String book_id;
-  String book_title;
-  String book_image_url;
-  String book_pdf_url;
-  String book_lang;
-  String book_page;
-  String book_year;
-  String book_author;
-  String book_date;
-  String a_id;
-
-  BookData(
-      this.book_id,
-      this.book_title,
-      this.book_image_url,
-      this.book_pdf_url,
-      this.book_lang,
-      this.book_page,
-      this.book_year,
-      this.book_author,
-      this.book_date,
-      this.a_id);
-
-  BookData.allpdf(
-      this.book_id,
-      this.book_title,
-      this.book_image_url,
-      this.book_pdf_url,
-      this.book_lang,
-      this.book_page,
-      this.book_year,
-      this.book_author);
 }

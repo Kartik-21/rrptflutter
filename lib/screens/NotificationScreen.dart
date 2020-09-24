@@ -8,6 +8,7 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/model/notificationdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -86,19 +87,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
   //get notification related data from server
   Future<List<NotificationData>> _getNotificationData() async {
     // var i1 = UrlData();
-    var url = ii.getNotiData;
-    baseurl = UrlData.baseUrlOfServer;
-    print(url);
-    var result = await http.get(url);
-    var data = json.decode(result.body);
-    List<NotificationData> notis = [];
-    for (var i in data) {
-      var noti =
-          NotificationData(i["noti_id"], i["noti_name"], i["date"], i["a_id"]);
-      notis.add(noti);
+    try {
+      var url = ii.getNotiData;
+      baseurl = UrlData.baseUrlOfServer;
+      print(url);
+      var responce = await http.get(url);
+
+      if (200 == responce.statusCode) {
+        print("url found");
+        print(responce.body);
+        //    var data = json.decode(result.body);
+        //    print(data);
+        List<NotificationData> list =
+            notificationDataFromJson(responce.body).toList();
+        print(list.length);
+        return list;
+      } else {
+        print("data error");
+        return List<NotificationData>();
+      }
+    } catch (e) {
+      print(e.message);
+      return List<NotificationData>();
     }
-    print(notis.length);
-    return notis;
   }
 
   @override
@@ -148,7 +159,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               maxWidth: MediaQuery.of(context).size.width * 0.7,
                             ),
                             child: Text(
-                              snapshot.data[index].noti_name,
+                              snapshot.data[index].notiName,
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -186,14 +197,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
     myInterstitial.dispose();
     myBanner.dispose();
   }
-}
-
-class NotificationData {
-  String noti_id;
-  String noti_name;
-
-  NotificationData(this.noti_id, this.noti_name, this.date, this.a_id);
-
-  String date;
-  String a_id;
 }

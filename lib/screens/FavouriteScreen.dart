@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/model/userbookdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/utils/UrlData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -74,25 +75,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 //    name1 = preferences.getString('name') ?? null;
 //    imgurl1 = preferences.getString('imageurl') ?? null;
 
-    //var i = UrlData();
-    var url = ii.getUserPdfData;
-    baseurl = UrlData.baseUrlOfServer;
-    print(url);
-    var data1 = {'email': sharedEmail};
-    var result = await http.post(url, body: json.encode(data1));
-    var data = json.decode(result.body);
-    List<UserBookData> books = [];
-    for (var i in data) {
-      var book = UserBookData(
-        i["user_book_id"],
-        i["book_title"],
-        i["book_image_url"],
-        i["book_pdf_url"],
-      );
-      books.add(book);
+    try {
+      var url = ii.getUserPdfData;
+      baseurl = UrlData.baseUrlOfServer;
+      print(url);
+      var data1 = {'email': sharedEmail};
+      var responce = await http.post(url, body: json.encode(data1));
+
+      if (200 == responce.statusCode) {
+        print("url found");
+        print(responce.body);
+        //    var data = json.decode(result.body);
+        //    print(data);
+        List<UserBookData> list = userBookDataFromJson(responce.body).toList();
+        print(list.length);
+        return list;
+      } else {
+        print("data error");
+        return List<UserBookData>();
+      }
+    } catch (e) {
+      print(e.message);
+      return List<UserBookData>();
     }
-    print(books.length);
-    return books;
   }
 
   //open a pdf file
@@ -151,7 +156,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          //debugPrint(baseurl + snapshot.data[index].book_image_url);
                           return Card(
                             elevation: 4.0,
                             //  margin: EdgeInsets.all(10.0),
@@ -166,19 +170,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                       width: 85.0,
                                       fit: BoxFit.cover,
                                       image: NetworkImage(baseurl +
-                                          snapshot.data[index].book_image_url),
+                                          snapshot.data[index].bookImageUrl),
                                       placeholder:
                                           AssetImage("assets/loading.gif"),
                                     )),
                                 title: Text(
-                                  snapshot.data[index].book_title,
+                                  snapshot.data[index].bookTitle,
                                   style: textStyle,
                                 ),
                                 //   subtitle: Text(snapshot.data[index].book_lang),
                                 trailing: GestureDetector(
                                   child: Icon(Icons.delete),
                                   onTap: () {
-                                    _delbook(snapshot.data[index].user_book_id);
+                                    _delbook(snapshot.data[index].userBookId);
                                     setState(() {
                                       debugPrint("delete button");
                                       // _getUserBookData();
@@ -187,7 +191,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 ),
                                 onTap: () {
                                   _pdfurldata(baseurl +
-                                      snapshot.data[index].book_pdf_url);
+                                      snapshot.data[index].bookPdfUrl);
                                 },
                               ),
                             ),
@@ -207,14 +211,4 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     myInterstitial.dispose();
     myBanner.dispose();
   }
-}
-
-class UserBookData {
-  String user_book_id;
-  String book_title;
-  String book_image_url;
-  String book_pdf_url;
-
-  UserBookData(this.user_book_id, this.book_title, this.book_image_url,
-      this.book_pdf_url);
 }
