@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "321638515109-fjglo7sa89d4hepo60219327n2j05v3u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jkp.rrptflutter",
+            "certificate_hash": "1953b39c82e8e28b8461fedcf0a73be24b86c600"
+          }
+        },
+        {
           "client_id": "321638515109-4v84n4s1bv962f37ntfvss85lsu39ttn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var baseurl;
   var pdfurl;
   var sharedEmail;
+  double _height, _width, _blockOfHeight, _blockOfWidth;
 
 //  var sharedName;
 //  var sharedImgUrl;
@@ -129,74 +130,83 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.button;
-    return Padding(
-      padding: EdgeInsets.only(bottom: bottomPadding),
-      child: Container(
-          child: RefreshIndicator(
-        onRefresh: _getData,
-        child: FutureBuilder(
-          future: _getBookData(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //    print(snapshot.data.toString());
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                    child: SpinKitFadingCircle(
-                  color: Colors.white,
-                  size: 60.0,
-                )),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                    return Card(
-                      elevation: 4.0,
-                      //  margin: EdgeInsets.all(10.0),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0.0),
-                        child: ListTile(
-                          leading: ClipRRect(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(5)),
-                              child: FadeInImage(
-                                height: 60.0,
-                                width: 85.0,
-                                fit: BoxFit.cover,
-                                image: NetworkImage(baseurl +
-                                    snapshot.data[index].book_image_url),
-                                placeholder: AssetImage(
-                                  "assets/loading1.gif",
-                                ),
-                              )),
-                          title: Text(
-                            snapshot.data[index].book_title,
-                            style: textStyle,
-                          ),
-                          subtitle: Text(snapshot.data[index].book_lang),
-                          trailing: GestureDetector(
-                            child: Icon(
-                              Icons.add,
-                              size: 31.0,
+    _height = _height ?? MediaQuery.of(context).size.height;
+    _width = _width ?? MediaQuery.of(context).size.width;
+    _blockOfHeight = _height / 100;
+    _blockOfWidth = _width / 100;
+
+    return Container(
+      height: _height,
+      width: _width,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: bottomPadding),
+        child: Container(
+            child: RefreshIndicator(
+          onRefresh: _getData,
+          child: FutureBuilder(
+            future: _getBookData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //    print(snapshot.data.toString());
+              if (snapshot.data == null) {
+                return Container(
+                  child: Center(
+                      child: SpinKitFadingCircle(
+                    color: Colors.white,
+                    size: 60.0,
+                  )),
+                );
+              } else {
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                      return Card(
+                        elevation: 4.0,
+                        //  margin: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 0.0),
+                          child: ListTile(
+                            leading: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                child: FadeInImage(
+                                  height: 60.0,
+                                  width: 85.0,
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(baseurl +
+                                      snapshot.data[index].book_image_url),
+                                  placeholder: AssetImage(
+                                    "assets/loading1.gif",
+                                  ),
+                                )),
+                            title: Text(
+                              snapshot.data[index].book_title,
+                              style: textStyle,
+                            ),
+                            subtitle: Text(snapshot.data[index].book_lang),
+                            trailing: GestureDetector(
+                              child: Icon(
+                                Icons.add,
+                                size: 31.0,
+                              ),
+                              onTap: () {
+                                debugPrint("add button");
+                                _addbook(snapshot.data[index].book_id);
+                              },
                             ),
                             onTap: () {
-                              debugPrint("add button");
-                              _addbook(snapshot.data[index].book_id);
+                              _pdfurldata("$baseurl" +
+                                  snapshot.data[index].book_pdf_url);
                             },
                           ),
-                          onTap: () {
-                            _pdfurldata(
-                                "$baseurl" + snapshot.data[index].book_pdf_url);
-                          },
                         ),
-                      ),
-                    );
-                  });
-            }
-          },
-            ),
-          )),
+                      );
+                    });
+              }
+            },
+          ),
+        )),
+      ),
     );
   }
 

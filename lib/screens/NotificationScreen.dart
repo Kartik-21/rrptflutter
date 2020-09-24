@@ -1,5 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -23,6 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   var ii = UrlData();
   BannerAd myBanner;
   var bottomPadding = 60.0;
+  double _height, _width, _blockOfHeight, _blockOfWidth;
 
   BannerAd createBannerAd() {
     return BannerAd(
@@ -97,51 +104,76 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.subtitle1;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Notification"),
-        elevation: 5.0,
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(bottom: bottomPadding),
-        child: Container(
-          child: FutureBuilder(
-            future: _getNotificationData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //        print(snapshot.data.toString());
-              if (snapshot.data == null) {
-                return Center(
-                    child: Container(
-                  child: SpinKitFadingCircle(
-                    color: Colors.white,
-                    size: 60.0,
-                  ),
-                ));
-              } else {
-                return ListView.builder(
-                    reverse: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        elevation: 4.0,
-                        //  margin: EdgeInsets.all(10.0),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                          child: ListTile(
-                            title: Linkify(
-                              text: snapshot.data[index].noti_name,
-                              onOpen: (link) {
-                                print('${link.url}');
-                                _openfiledata('${link.url}');
-                              },
-                              style: textStyle,
+    _height = _height ?? MediaQuery.of(context).size.height;
+    _width = _width ?? MediaQuery.of(context).size.width;
+    _blockOfHeight = _height / 100;
+    _blockOfWidth = _width / 100;
+
+    return Container(
+      height: _height,
+      width: _width,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Notification"),
+          elevation: 5.0,
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: Container(
+            child: FutureBuilder(
+              future: _getNotificationData(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //        print(snapshot.data.toString());
+                if (snapshot.data == null) {
+                  return Center(
+                      child: Container(
+                    child: SpinKitFadingCircle(
+                      color: Colors.white,
+                      size: 60.0,
+                    ),
+                  ));
+                } else {
+                  return ListView.builder(
+                      reverse: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ChatBubble(
+                          clipper:
+                              ChatBubbleClipper4(type: BubbleType.sendBubble),
+                          alignment: Alignment.topRight,
+                          margin: EdgeInsets.only(top: 20),
+                          backGroundColor: Theme.of(context).accentColor,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.7,
+                            ),
+                            child: Text(
+                              snapshot.data[index].noti_name,
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-                        ),
-                      );
-                    });
-              }
-            },
+                        );
+                        //   Card(
+                        //   elevation: 4.0,
+                        //   //  margin: EdgeInsets.all(10.0),
+                        //   child: Padding(
+                        //     padding: EdgeInsets.symmetric(vertical: 5.0),
+                        //     child: ListTile(
+                        //       title: Linkify(
+                        //         text: snapshot.data[index].noti_name,
+                        //         onOpen: (link) {
+                        //           print('${link.url}');
+                        //           _openfiledata('${link.url}');
+                        //         },
+                        //         style: textStyle,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                      });
+                }
+              },
+            ),
           ),
         ),
       ),

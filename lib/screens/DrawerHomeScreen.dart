@@ -20,6 +20,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   var sharedEmail;
   var sharedName;
   var sharedImgUrl;
+  double _height, _width, _blockOfHeight, _blockOfWidth;
 
   @override
   void initState() {
@@ -36,7 +37,14 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _height = _height ?? MediaQuery.of(context).size.height;
+    _width = _width ?? MediaQuery.of(context).size.width;
+    _blockOfHeight = _height / 100;
+    _blockOfWidth = _width / 100;
+
     return Container(
+        height: _height,
+        width: _width,
         child: FutureBuilder(
             future: _getAccountData(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
