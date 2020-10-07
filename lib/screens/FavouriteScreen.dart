@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:rrptflutter/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FavouriteScreen extends StatefulWidget {
   @override
@@ -135,7 +137,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       height: _height,
       child: Scaffold(
           appBar: AppBar(
-            title: Text("Favourite"),
+            title: Text(S.of(context).favourite),
             elevation: 5.0,
           ),
           body: Padding(

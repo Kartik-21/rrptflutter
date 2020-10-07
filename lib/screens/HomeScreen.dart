@@ -10,6 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:rrptflutter/generated/l10n.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

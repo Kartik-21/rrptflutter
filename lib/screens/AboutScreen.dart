@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:rrptflutter/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -35,7 +37,7 @@ class _AboutScreenState extends State<AboutScreen> {
       height: _height,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("About"),
+          title: Text(S.of(context).about),
           elevation: 5.0,
         ),
         body: Container(
@@ -57,7 +59,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        "Raj Rajedra Prakashan Trust",
+                        S.of(context).applicationTitle,
                         style: TextStyle(fontSize: 25.0),
                         textAlign: TextAlign.center,
                       )),

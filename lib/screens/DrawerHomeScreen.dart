@@ -8,6 +8,8 @@ import 'package:rrptflutter/screens/HomeScreen.dart';
 import 'package:rrptflutter/utils/SigninWithGoogle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:rrptflutter/generated/l10n.dart';
 
 class DrawerHomeScreen extends StatefulWidget {
   @override
@@ -52,7 +54,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                 print(snapshot.data.toString());
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text("Home"),
+                    title: Text(S.of(context).homePage),
                     elevation: 5.0,
 //                    actions: <Widget>[
 //                      PopupMenuButton(
@@ -80,7 +82,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                             currentAccountPicture: CircleAvatar(
                                 backgroundImage: NetworkImage(sharedImgUrl))),
                         ListTile(
-                          title: Text("Home Page"),
+                          title: Text(S.of(context).homePage),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.home),
                           onTap: () {
@@ -88,7 +90,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("Favourite"),
+                          title: Text(S.of(context).favourite),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.favorite),
                           onTap: () {
@@ -97,7 +99,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("Notification"),
+                          title: Text(S.of(context).notification),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.notifications),
                           onTap: () {
@@ -106,7 +108,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("Share"),
+                          title: Text(S.of(context).share),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.share),
                           onTap: () {
@@ -116,7 +118,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("Rate us"),
+                          title: Text(S.of(context).rateUs),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.rate_review),
                           onTap: () {
@@ -127,7 +129,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("About"),
+                          title: Text(S.of(context).about),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.info),
                           onTap: () {
@@ -136,7 +138,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
                           },
                         ),
                         ListTile(
-                          title: Text("Logout"),
+                          title: Text(S.of(context).logout),
                           trailing: Icon(Icons.arrow_right),
                           leading: Icon(Icons.exit_to_app),
                           onTap: () async {

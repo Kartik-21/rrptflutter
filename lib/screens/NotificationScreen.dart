@@ -16,6 +16,8 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:rrptflutter/generated/l10n.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -125,7 +127,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       width: _width,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Notification"),
+          title: Text(S.of(context).notification),
           elevation: 5.0,
         ),
         body: Padding(
