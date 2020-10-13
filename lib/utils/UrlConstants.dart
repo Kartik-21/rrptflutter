@@ -1,20 +1,20 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'dart:io' show Platform;
 
-class UrlData {
+class UrlConstants {
   //static final String BASE_URL = "http://192.168.42.81/rrptflutteradmin/rrptflutter/";
 //  static final String BASE_URL =
 //      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";
-  static final String baseUrlOfServer =
+  static const String baseUrlOfServer =
       "http://rrptbooks.atwebpages.com/rrptflutteradmin/rrptflutter/";
-  final String getPdfData = baseUrlOfServer + "getpdfdata.php";
-  final String getNotiData = baseUrlOfServer + "getnotidata.php";
-  final String sentLoginData = baseUrlOfServer + "sentlogindata.php";
-  final String getUserPdfData = baseUrlOfServer + "getuserpdfdata.php";
-  final String addPdfToUser = baseUrlOfServer + "addpdftouser.php";
-  final String delPdfToUser = baseUrlOfServer + "delpdftouser.php";
+  static const getPdfData = baseUrlOfServer + "getpdfdata.php";
+  static const getNotificationData = baseUrlOfServer + "getnotidata.php";
+  static const sentLoginData = baseUrlOfServer + "sentlogindata.php";
+  static const getUserPdfData = baseUrlOfServer + "getuserpdfdata.php";
+  static const addPdfToUser = baseUrlOfServer + "addpdftouser.php";
+  static const delPdfToUser = baseUrlOfServer + "delpdftouser.php";
 
-  final String myAppIdForAds = "ca-app-pub-4833612091218866~5375970321"; //appid
+  static const myAppIdForAds = "ca-app-pub-4833612091218866~5375970321"; //appid
 
   String checkPlatefromForInterstitialAd() {
     if (Platform.isAndroid) {
@@ -25,7 +25,7 @@ class UrlData {
     return null;
   }
 
-  String checkPlatefromForBannerAd() {
+  static String checkPlatefromForBannerAd() {
     if (Platform.isAndroid) {
       return "ca-app-pub-3940256099942544/6300978111"; //test id banner
     } else if (Platform.isIOS) {

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
@@ -8,9 +6,10 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/bloc/NotificationScreenBloc.dart';
 import 'package:rrptflutter/model/notificationdata.dart';
 import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
+import 'package:rrptflutter/utils/UrlConstants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +28,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
   InterstitialAd myInterstitial;
-  var ii = UrlData();
+  var ii = UrlConstants();
   BannerAd myBanner;
   var bottomPadding = 60.0;
   double _height, _width, _blockOfHeight, _blockOfWidth;
@@ -37,7 +36,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   BannerAd createBannerAd() {
     return BannerAd(
       //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
-      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      adUnitId: UrlConstants.checkPlatefromForBannerAd(), //test id
       size: AdSize.banner, //size=60.0
       // targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
@@ -62,56 +61,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    //   _getNotificationData();
+    notibloc.GetAllNoti();
+
     // UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
-    myInterstitial = ii.createInterstitialAd()
-      ..load()
-      ..show();
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
-  }
-
-  //open file link content
-  _openfiledata(String ur) async {
-    String url = ur;
-    if (await canLaunch(url)) {
-      Fluttertoast.showToast(msg: "Opening File...");
-      await launch(url);
-    } else {
-      Fluttertoast.showToast(msg: "Could't Open File");
-    }
-  }
-
-  //get notification related data from server
-  Future<List<NotificationData>> _getNotificationData() async {
-    // var i1 = UrlData();
-    try {
-      var url = ii.getNotiData;
-      baseurl = UrlData.baseUrlOfServer;
-      print(url);
-      var responce = await http.get(url);
-
-      if (200 == responce.statusCode) {
-        print("url found");
-        print(responce.body);
-        //    var data = json.decode(result.body);
-        //    print(data);
-        List<NotificationData> list =
-            notificationDataFromJson(responce.body).toList();
-        print(list.length);
-        return list;
-      } else {
-        print("data error");
-        return List<NotificationData>();
-      }
-    } catch (e) {
-      print(e.message);
-      return List<NotificationData>();
-    }
+    // FirebaseAdMob.instance.initialize(appId: UrlConstants.myAppIdForAds);
+    // myInterstitial = ii.createInterstitialAd()
+    //   ..load()
+    //   ..show();
+    // myBanner = createBannerAd()
+    //   ..load()
+    //   ..show(
+    //     anchorType: AnchorType.bottom,
+    //   );
   }
 
   @override
@@ -133,8 +94,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         body: Padding(
           padding: EdgeInsets.only(bottom: bottomPadding),
           child: Container(
-            child: FutureBuilder(
-              future: _getNotificationData(),
+            child: StreamBuilder<List<NotificationData>>(
+              stream: notibloc.getNoti,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 //        print(snapshot.data.toString());
                 if (snapshot.data == null) {
@@ -160,10 +121,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             constraints: BoxConstraints(
                               maxWidth: MediaQuery.of(context).size.width * 0.7,
                             ),
-                            child: Text(
-                              snapshot.data[index].notiName,
-                              style: TextStyle(color: Colors.white),
+                            child: Linkify(
+                              text: snapshot.data[index].notiName,
+                              onOpen: (link) {
+                                print('${link.url}');
+                                notibloc.openfiledata('${link.url}');
+                              },
+                              style: textStyle,
                             ),
+
+                            // Text(
+                            //   snapshot.data[index].notiName,
+                            //   style: TextStyle(color: Colors.white),
+                            // ),
                           ),
                         );
                         //   Card(

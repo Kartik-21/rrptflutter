@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:rrptflutter/utils/UrlData.dart';
+import 'package:rrptflutter/utils/UrlConstants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -61,8 +61,8 @@ void signOutGoogle() async {
 }
 
 Future _sentLoginData(FirebaseUser user) async {
-  var i = UrlData();
-  var url = i.sentLoginData;
+  var i = UrlConstants();
+  var url = UrlConstants.sentLoginData;
   print(url);
   print(user);
   print(user.email);

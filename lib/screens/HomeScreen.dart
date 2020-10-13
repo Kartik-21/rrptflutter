@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
+import 'package:rrptflutter/bloc/HomeScreenBloc.dart';
 import 'package:rrptflutter/model/bookdata.dart';
-import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:rrptflutter/utils/UrlConstants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,39 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
 //  var sharedImgUrl;
   InterstitialAd myInterstitial;
   BannerAd myBanner;
-  var ii = UrlData();
+  var ii = UrlConstants();
   var bottomPadding = 60.0;
 
   //get book related data from server
-  Future<List<BookData>> _getBookData() async {
+  Future<void> _sharedData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     sharedEmail = preferences.getString('email') ?? null;
 //    sharedName = preferences.getString('name') ?? null;
 //    sharedImgUrl = preferences.getString('imageurl') ?? null;
     print("shared email1 $sharedEmail");
-
-    try {
-      var url = ii.getPdfData;
-      baseurl = UrlData.baseUrlOfServer;
-      print(url);
-      var responce = await http.get(url);
-
-      if (200 == responce.statusCode) {
-        print("url found");
-        print(responce.body);
-        //    var data = json.decode(result.body);
-        //    print(data);
-        List<BookData> list = bookDataFromJson(responce.body).toList();
-        print(list.length);
-        return list;
-      } else {
-        print("data error");
-        return List<BookData>();
-      }
-    } catch (e) {
-      print(e.message);
-      return List<BookData>();
-    }
   }
 
   Future<void> _getData() async {
@@ -75,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   BannerAd createBannerAd() {
     return BannerAd(
       //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
-      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      adUnitId: UrlConstants.checkPlatefromForBannerAd(), //test id
       size: AdSize.banner, //size=60.0
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.failedToLoad) {
@@ -88,45 +63,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //add book to user favourite
-  Future _addbook(String bid) async {
-    // var i = UrlData();
-    var url = ii.addPdfToUser;
-    print(url);
-    print(sharedEmail);
-    print(bid);
-    var data = {'email': sharedEmail, 'bid': bid};
-    var result = await http.post(url, body: json.encode(data));
-    var msg = json.decode(result.body);
-    print(msg);
-    Fluttertoast.showToast(msg: msg);
-  }
-
-  //open a pdf file
-  _pdfurldata(String ur) async {
-    String url = ur;
-    if (await canLaunch(url)) {
-      Fluttertoast.showToast(msg: "Opening File...");
-      await launch(url);
-    } else {
-      Fluttertoast.showToast(msg: "Could't Open File");
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     //UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
-    myInterstitial = ii.createInterstitialAd()
-      ..load()
-      ..show();
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
-//    _getBookData();
+    homebloc.GetAllPdf();
+    _sharedData();
+    // FirebaseAdMob.instance.initialize(appId: UrlConstants.myAppIdForAds);
+    // myInterstitial = ii.createInterstitialAd()
+    //   ..load()
+    //   ..show();
+    // myBanner = createBannerAd()
+    //   ..load()
+    //   ..show(
+    //     anchorType: AnchorType.bottom,
+    //   );
   }
 
   @override
@@ -145,8 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
             child: RefreshIndicator(
           onRefresh: _getData,
-          child: FutureBuilder(
-            future: _getBookData(),
+          // child: FutureBuilder(
+          //   future: _getBookData(),
+          //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+          child: StreamBuilder<List<BookData>>(
+            stream: homebloc.getPdf,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               //    print(snapshot.data.toString());
               if (snapshot.data == null) {
@@ -175,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 60.0,
                                   width: 85.0,
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(baseurl +
+                                  image: NetworkImage(UrlConstants
+                                          .baseUrlOfServer + //in server only path of the image ex- /images/xyz.png
                                       snapshot.data[index].bookImageUrl),
                                   placeholder: AssetImage(
                                     "assets/loading1.gif",
@@ -193,12 +148,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               onTap: () {
                                 debugPrint("add button");
-                                _addbook(snapshot.data[index].bookId);
+                                //      _addbook(snapshot.data[index].bookId);
+                                homebloc.AddFav(
+                                    bid: snapshot.data[index].bookId,
+                                    email: sharedEmail);
+                                // Map<String, dynamic> map =
+                                //     Map<String, dynamic>();
+                                // map['email'] = "$sharedEmail";
+                                // map['bid'] = snapshot.data[index].bookId;
+                                // //        print(map);
+                                // homebloc.addbookid.add(map);
                               },
                             ),
                             onTap: () {
-                              _pdfurldata(
-                                  "$baseurl" + snapshot.data[index].bookPdfUrl);
+                              homebloc.openfiledata(
+                                  UrlConstants.baseUrlOfServer +
+                                      snapshot.data[index].bookPdfUrl);
                             },
                           ),
                         ),
@@ -215,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
+    // myInterstitial.dispose();
+    // myBanner.dispose();
   }
 }

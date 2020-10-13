@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:rrptflutter/model/userbookdata.dart';
-import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:rrptflutter/utils/UrlConstants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:rrptflutter/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:rrptflutter/bloc/FavouriteScreenBloc.dart';
 
 class FavouriteScreen extends StatefulWidget {
   @override
@@ -19,9 +17,10 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  var baseurl;
+  // var baseurl;
   var sharedEmail;
-  var ii = UrlData();
+
+  // var ii = UrlConstants();
   var bottomPadding = 60.0;
   double _height, _width, _blockOfHeight, _blockOfWidth;
 
@@ -30,10 +29,21 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   InterstitialAd myInterstitial;
   BannerAd myBanner;
 
+  Future<void> _sharedData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    sharedEmail = preferences.getString('email') ?? null;
+    favbloc.GetUserBook("$sharedEmail");
+
+    //  baseurl = UrlConstants.baseUrlOfServer;
+//    sharedName = preferences.getString('name') ?? null;
+//    sharedImgUrl = preferences.getString('imageurl') ?? null;
+    print("shared email1 $sharedEmail");
+  }
+
   BannerAd createBannerAd() {
     return BannerAd(
       //  adUnitId: "ca-app-pub-3308779248747640/1105235590", //id
-      adUnitId: ii.checkPlatefromForBannerAd(), //test id
+      adUnitId: UrlConstants.checkPlatefromForBannerAd(), //test id
       size: AdSize.banner, //size=60.0
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.failedToLoad) {
@@ -56,72 +66,18 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   void initState() {
     super.initState();
-    //   _getUserBookData();
+    _sharedData();
     //UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
-    myInterstitial = ii.createInterstitialAd()
-      ..load()
-      ..show();
-
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
-  }
-
-  //get userbook related data from server
-  Future<List<UserBookData>> _getUserBookData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    sharedEmail = preferences.getString('email') ?? null;
-//    name1 = preferences.getString('name') ?? null;
-//    imgurl1 = preferences.getString('imageurl') ?? null;
-
-    try {
-      var url = ii.getUserPdfData;
-      baseurl = UrlData.baseUrlOfServer;
-      print(url);
-      var data1 = {'email': sharedEmail};
-      var responce = await http.post(url, body: json.encode(data1));
-
-      if (200 == responce.statusCode) {
-        print("url found");
-        print(responce.body);
-        //    var data = json.decode(result.body);
-        //    print(data);
-        List<UserBookData> list = userBookDataFromJson(responce.body).toList();
-        print(list.length);
-        return list;
-      } else {
-        print("data error");
-        return List<UserBookData>();
-      }
-    } catch (e) {
-      print(e.message);
-      return List<UserBookData>();
-    }
-  }
-
-  //open a pdf file
-  _pdfurldata(String ur) async {
-    String url = ur;
-    if (await canLaunch(url)) {
-      Fluttertoast.showToast(msg: "Opening File...");
-      await launch(url);
-    } else {
-      Fluttertoast.showToast(msg: "Could't Open File");
-    }
-  }
-
-  //delete book to user favourite
-  Future _delbook(String ubid) async {
-    //var i = UrlData();
-    var url = ii.delPdfToUser;
-    var data = {'ubid': ubid};
-    var result = await http.post(url, body: json.encode(data));
-    var msg = json.decode(result.body);
-    print(msg);
-    Fluttertoast.showToast(msg: msg);
+    // FirebaseAdMob.instance.initialize(appId: UrlConstants.myAppIdForAds);
+    // myInterstitial = ii.createInterstitialAd()
+    //   ..load()
+    //   ..show();
+    //
+    // myBanner = createBannerAd()
+    //   ..load()
+    //   ..show(
+    //     anchorType: AnchorType.bottom,
+    //   );
   }
 
   @override
@@ -131,7 +87,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     _width = _width ?? MediaQuery.of(context).size.width;
     _blockOfHeight = _height / 100;
     _blockOfWidth = _width / 100;
-
+    // print("now call");
+    //  favbloc.GetUserBook("$sharedEmail");
     return Container(
       width: _width,
       height: _height,
@@ -145,8 +102,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             child: Container(
                 child: RefreshIndicator(
               onRefresh: _getData,
-              child: FutureBuilder(
-                future: _getUserBookData(),
+              child: StreamBuilder<List<UserBookData>>(
+                stream: favbloc.userPdf,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   //  print(snapshot.data.toString());
                   if (snapshot.data == null) {
@@ -171,8 +128,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                       height: 60.0,
                                       width: 85.0,
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(baseurl +
-                                          snapshot.data[index].bookImageUrl),
+                                      image: NetworkImage(
+                                          "${UrlConstants.baseUrlOfServer}" +
+                                              "${snapshot.data[index].bookImageUrl}"),
                                       placeholder:
                                           AssetImage("assets/loading.gif"),
                                     )),
@@ -184,7 +142,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 trailing: GestureDetector(
                                   child: Icon(Icons.delete),
                                   onTap: () {
-                                    _delbook(snapshot.data[index].userBookId);
+                                    favbloc.DelUserBook(
+                                        ubid: snapshot.data[index].userBookId);
                                     setState(() {
                                       debugPrint("delete button");
                                       // _getUserBookData();
@@ -192,8 +151,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                   },
                                 ),
                                 onTap: () {
-                                  _pdfurldata(baseurl +
-                                      snapshot.data[index].bookPdfUrl);
+                                  favbloc.openfile(
+                                      "${UrlConstants.baseUrlOfServer}" +
+                                          "${snapshot.data[index].bookPdfUrl}");
                                 },
                               ),
                             ),
@@ -210,7 +170,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   void dispose() {
     super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
+    // myInterstitial.dispose();
+    // myBanner.dispose();
   }
 }
