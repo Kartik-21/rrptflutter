@@ -145,7 +145,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                     favbloc.DelUserBook(
                                         ubid: snapshot.data[index].userBookId);
                                     setState(() {
-                                      debugPrint("delete button");
+                                      debugPrint("delete button setstate");
+                                      favbloc.GetUserBook("$sharedEmail");
                                       // _getUserBookData();
                                     });
                                   },
