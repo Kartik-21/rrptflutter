@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:rrptflutter/utils/SigninWithGoogle.dart';
+import 'package:rrptflutter/screens/services/SigninWithGoogle.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

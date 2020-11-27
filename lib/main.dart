@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rrptflutter/screens/AboutScreen.dart';
+import 'package:rrptflutter/screens/drawer_screen/AboutScreen.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
-import 'package:rrptflutter/screens/FavouriteScreen.dart';
+import 'package:rrptflutter/screens/drawer_screen/FavouriteScreen.dart';
 import 'package:rrptflutter/screens/FirstScreen.dart';
-import 'package:rrptflutter/screens/NotificationScreen.dart';
+import 'package:rrptflutter/screens/drawer_screen/NotificationScreen.dart';
 import 'package:rrptflutter/screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rrptflutter/generated/l10n.dart';

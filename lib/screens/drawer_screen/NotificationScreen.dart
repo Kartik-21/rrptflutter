@@ -10,7 +10,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:rrptflutter/model/notificationdata.dart';
 import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
+import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +29,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   String baseurl;
   InterstitialAd myInterstitial;
-  var ii = UrlData();
+  var ii = StringConstants();
   BannerAd myBanner;
   var bottomPadding = 60.0;
   double _height, _width, _blockOfHeight, _blockOfWidth;
@@ -91,7 +91,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // var i1 = UrlData();
     try {
       var url = ii.getNotiData;
-      baseurl = UrlData.baseUrlOfServer;
+      baseurl = StringConstants.baseUrlOfServer;
       print(url);
       var responce = await http.get(url);
 

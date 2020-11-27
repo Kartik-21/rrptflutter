@@ -27,7 +27,7 @@ class BookData {
   String bookImageUrl;
   String bookPdfUrl;
   String bookLang;
-  dynamic bookPage;
+  String bookPage;
   String bookYear;
   String bookAuthor;
   DateTime date;

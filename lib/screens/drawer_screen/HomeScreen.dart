@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:rrptflutter/model/bookdata.dart';
 import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
+import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //  var sharedImgUrl;
   InterstitialAd myInterstitial;
   BannerAd myBanner;
-  var ii = UrlData();
+  var ii = StringConstants();
   var bottomPadding = 60.0;
 
   //get book related data from server
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       var url = ii.getPdfData;
-      baseurl = UrlData.baseUrlOfServer;
+      baseurl = StringConstants.baseUrlOfServer;
       print(url);
       var responce = await http.get(url);
 

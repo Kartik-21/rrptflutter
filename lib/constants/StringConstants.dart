@@ -1,7 +1,7 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'dart:io' show Platform;
 
-class UrlData {
+class StringConstants {
   //static final String BASE_URL = "http://192.168.42.81/rrptflutteradmin/rrptflutter/";
 //  static final String BASE_URL =
 //      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";

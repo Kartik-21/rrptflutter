@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:rrptflutter/model/userbookdata.dart';
 import 'dart:convert';
-import 'package:rrptflutter/utils/UrlData.dart';
+import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +21,7 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   var baseurl;
   var sharedEmail;
-  var ii = UrlData();
+  var ii = StringConstants();
   var bottomPadding = 60.0;
   double _height, _width, _blockOfHeight, _blockOfWidth;
 
@@ -79,7 +79,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
     try {
       var url = ii.getUserPdfData;
-      baseurl = UrlData.baseUrlOfServer;
+      baseurl = StringConstants.baseUrlOfServer;
       print(url);
       var data1 = {'email': sharedEmail};
       var responce = await http.post(url, body: json.encode(data1));
