@@ -33,6 +33,7 @@ Future<String> signInWithGoogle() async {
   assert(user.photoUrl != null);
 
   name = user.displayName;
+  StringConstants.email = user.email;
   email = user.email;
   imageUrl = user.photoUrl;
 
@@ -62,7 +63,7 @@ void signOutGoogle() async {
 
 Future _sentLoginData(FirebaseUser user) async {
   var i = StringConstants();
-  var url = i.sentLoginData;
+  var url = StringConstants.sentLoginData;
   print(url);
   print(user);
   print(user.email);

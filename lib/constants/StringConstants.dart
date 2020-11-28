@@ -7,12 +7,12 @@ class StringConstants {
 //      "http://192.168.43.24/rrptflutteradmin/rrptflutter/";
   static final String baseUrlOfServer =
       "http://rrptbooks.atwebpages.com/rrptflutteradmin/rrptflutter/";
-  final String getPdfData = baseUrlOfServer + "getpdfdata.php";
-  final String getNotiData = baseUrlOfServer + "getnotidata.php";
-  final String sentLoginData = baseUrlOfServer + "sentlogindata.php";
-  final String getUserPdfData = baseUrlOfServer + "getuserpdfdata.php";
-  final String addPdfToUser = baseUrlOfServer + "addpdftouser.php";
-  final String delPdfToUser = baseUrlOfServer + "delpdftouser.php";
+  static final String getPdfData = baseUrlOfServer + "getpdfdata.php";
+  static final String getNotiData = baseUrlOfServer + "getnotidata.php";
+  static final String sentLoginData = baseUrlOfServer + "sentlogindata.php";
+  static final String getUserPdfData = baseUrlOfServer + "getuserpdfdata.php";
+  static final String addPdfToUser = baseUrlOfServer + "addpdftouser.php";
+  static final String delPdfToUser = baseUrlOfServer + "delpdftouser.php";
 
   final String myAppIdForAds = "ca-app-pub-4833612091218866~5375970321"; //appid
 
@@ -56,4 +56,30 @@ class StringConstants {
 //      },
 //    );
 //  }
+
+  static String email;
+
+  static const TIMEOUT_DURATION = Duration(seconds: 20);
+
+  static const String SOMETHING_WENT_WRONG =
+      "Something went wrong, please try again";
+  static const String SERVER_COULD_NOT_REACHED =
+      "Server couldn't reached, please check your internet connection";
+  static const String REQUEST_TIMED_OUT = "Request timed out";
+  static const String NO_INTERNET =
+      "Server couldn't reached, please check your internet connection";
+  static const String TIMEOUT_OCCURRED = "Request timed out";
+  static const String SUCCESSFULLY_UPDATED_THE_DATA =
+      "Data updated successfully";
+  static const String ERROR_WHILE_FETCHING_DATA = "Error while fetching data";
+  static const String SUCCESS = "Success";
+  static const String LOCATION_ALREADY_SELECTED = "Location already selected";
+  static const String SESSION_EXPIRED =
+      "Session has expired, please login again";
+}
+
+extension IntExtension on int {
+  bool isBetween(int lowerValue, int upperValue) {
+    return (this >= lowerValue && this <= upperValue);
+  }
 }

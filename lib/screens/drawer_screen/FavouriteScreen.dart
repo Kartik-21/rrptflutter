@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:rrptflutter/model/userbookdata.dart';
+import 'package:rrptflutter/models/userbookdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,7 +78,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 //    imgurl1 = preferences.getString('imageurl') ?? null;
 
     try {
-      var url = ii.getUserPdfData;
+      var url = StringConstants.getUserPdfData;
       baseurl = StringConstants.baseUrlOfServer;
       print(url);
       var data1 = {'email': sharedEmail};
@@ -116,7 +116,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   //delete book to user favourite
   Future _delbook(String ubid) async {
     //var i = UrlData();
-    var url = ii.delPdfToUser;
+    var url = StringConstants.delPdfToUser;
     var data = {'ubid': ubid};
     var result = await http.post(url, body: json.encode(data));
     var msg = json.decode(result.body);
@@ -167,14 +167,25 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 leading: ClipRRect(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
-                                    child: FadeInImage(
+                                    child:
+                                        // FadeInImage(
+                                        //   height: 60.0,
+                                        //   width: 85.0,
+                                        //   fit: BoxFit.cover,
+                                        //   image:
+                                        //   NetworkImage(
+                                        //       // baseurl +
+                                        //       // snapshot.data[index].bookImageUrl
+                                        //   "https://drive.google.com/file/d/11NbbI8R9bIWm2WeiFiCnglfBlRKvzBVr/view?usp=sharing"
+                                        //   ),
+                                        //   placeholder:
+                                        //       AssetImage("assets/loading.gif"),
+                                        // )
+                                        Image.network(
+                                      "https://drive.google.com/file/d/1ACFVY6l-wQkip0oJ93wufBEdJzk-XEUB/view?usp=sharing",
                                       height: 60.0,
                                       width: 85.0,
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(baseurl +
-                                          snapshot.data[index].bookImageUrl),
-                                      placeholder:
-                                          AssetImage("assets/loading.gif"),
                                     )),
                                 title: Text(
                                   snapshot.data[index].bookTitle,

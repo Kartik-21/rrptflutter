@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "logout" : MessageLookupByLibrary.simpleMessage("Logout"),
     "notification" : MessageLookupByLibrary.simpleMessage("Notification"),
     "rateUs" : MessageLookupByLibrary.simpleMessage("Rate us"),
+    "retry" : MessageLookupByLibrary.simpleMessage("Retry"),
     "share" : MessageLookupByLibrary.simpleMessage("Share")
   };
 }

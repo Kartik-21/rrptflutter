@@ -65,6 +65,7 @@ dependencies:
   #  rxdart: 0.24.1
   bloc: ^6.1.0
   flutter_bloc: ^6.1.1
+  equatable: ^1.2.5
 
 dev_dependencies:
   flutter_launcher_name: ^0.0.1

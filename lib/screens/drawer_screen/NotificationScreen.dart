@@ -8,7 +8,7 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:rrptflutter/model/notificationdata.dart';
+import 'package:rrptflutter/models/notificationdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -90,7 +90,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Future<List<NotificationData>> _getNotificationData() async {
     // var i1 = UrlData();
     try {
-      var url = ii.getNotiData;
+      var url = StringConstants.getNotiData;
       baseurl = StringConstants.baseUrlOfServer;
       print(url);
       var responce = await http.get(url);
