@@ -57,8 +57,6 @@ class StringConstants {
 //    );
 //  }
 
-  static String email;
-
   static const TIMEOUT_DURATION = Duration(seconds: 20);
 
   static const String SOMETHING_WENT_WRONG =

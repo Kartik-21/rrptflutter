@@ -56,6 +56,29 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
         yield HomeScreenErrorState(
             errorMsg: StringConstants.SOMETHING_WENT_WRONG);
       }
+    } else if (event is AddPdfToFav) {
+      Response response;
+      try {
+        response = await _homeScreenReop.AddbookToUserFav(
+            email: event.email, bid: event.bid);
+        // Map<String, dynamic> jsonMap = json.decode(response.body);
+        if (response != null) {
+          if (response.statusCode.isBetween(200, 299)) {
+            yield HomeScreenMsgState(msg: jsonDecode(response.body));
+          } else if (response.statusCode.isBetween(400, 599)) {
+            if (response.statusCode == 401) {
+              yield HomeScreenMsgState(
+                  msg: StringConstants.SOMETHING_WENT_WRONG);
+            }
+          }
+        }
+      } on TimeoutException {
+        yield HomeScreenMsgState(msg: StringConstants.TIMEOUT_OCCURRED);
+      } on SocketException {
+        yield HomeScreenMsgState(msg: StringConstants.NO_INTERNET);
+      } on Exception {
+        yield HomeScreenMsgState(msg: StringConstants.SOMETHING_WENT_WRONG);
+      }
     }
   }
 }

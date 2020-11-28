@@ -31,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   var sharedEmail;
   double _height, _width, _blockOfHeight, _blockOfWidth;
 
+  List<PdfModel> list = [];
+
   HomeScreenBloc homeScreenBloc;
 
 //  var sharedName;
@@ -39,37 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
   BannerAd myBanner;
   var ii = StringConstants();
   var bottomPadding = 60.0;
+  SharedPreferences preferences;
 
-  //get book related data from server
-  Future<List<BookData>> _getBookData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  Future<void> _getSharedData() async {
+    preferences = await SharedPreferences.getInstance();
     sharedEmail = preferences.getString('email') ?? null;
 //    sharedName = preferences.getString('name') ?? null;
 //    sharedImgUrl = preferences.getString('imageurl') ?? null;
     print("shared email1 $sharedEmail");
+    homeScreenBloc = BlocProvider.of<HomeScreenBloc>(context);
 
-    try {
-      var url = StringConstants.getPdfData;
-      baseurl = StringConstants.baseUrlOfServer;
-      print(url);
-      var responce = await http.get(url);
-
-      if (200 == responce.statusCode) {
-        print("url found");
-        print(responce.body);
-        //    var data = json.decode(result.body);
-        //    print(data);
-        List<BookData> list = bookDataFromJson(responce.body).toList();
-        print(list.length);
-        return list;
-      } else {
-        print("data error");
-        return List<BookData>();
-      }
-    } catch (e) {
-      print(e.message);
-      return List<BookData>();
-    }
   }
 
   Future<void> _getData() async {
@@ -95,20 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //add book to user favourite
-  Future _addbook(String bid) async {
-    // var i = UrlData();
-    var url = StringConstants.addPdfToUser;
-    print(url);
-    print(sharedEmail);
-    print(bid);
-    var data = {'email': sharedEmail, 'bid': bid};
-    var result = await http.post(url, body: json.encode(data));
-    var msg = json.decode(result.body);
-    print(msg);
-    Fluttertoast.showToast(msg: msg);
-  }
-
   //open a pdf file
   _pdfurldata(String ur) async {
     String url = ur;
@@ -123,9 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    homeScreenBloc = BlocProvider.of<HomeScreenBloc>(context);
-    //UrlData i = UrlData();
+    _getSharedData();
     // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
     // myInterstitial = ii.createInterstitialAd()
     //   ..load()
@@ -135,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //   ..show(
     //     anchorType: AnchorType.bottom,
     //   );
-//    _getBookData();
   }
 
   @override
@@ -144,16 +108,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _width ??= MediaQuery.of(context).size.width;
     _blockOfHeight ??= _height / 100;
     _blockOfWidth ??= _width / 100;
-
-    homeScreenBloc.add(FetchPdfData(email: StringConstants.email));
+    print("sh $sharedEmail");
+    homeScreenBloc.add(FetchPdfData(email: sharedEmail));
 
     return Container(
       height: _height,
       width: _width,
       child: BlocConsumer<HomeScreenBloc, HomeScreenState>(
         listener: (context, state) {
-          if (state is HomeScreenLoadedState) {
-            print("complte");
+          if (state is HomeScreenMsgState) {
+            Fluttertoast.showToast(msg: state.msg);
           }
         },
         builder: (context, state) {
@@ -162,9 +126,12 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (state is HomeScreenLoadingState) {
             return LoadingWidget();
           } else if (state is HomeScreenLoadedState) {
+            list = state.pdfs;
             return _homeWidget(context, state.pdfs);
           } else if (state is HomeScreenErrorState) {
             return MyErrorWidget(state.errorMsg);
+          } else if (state is HomeScreenMsgState) {
+            return _homeWidget(context, list);
           }
           return null;
         },
@@ -221,12 +188,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 31.0,
                         ),
                         onTap: () {
-                          // debugPrint("add button");
-                          // _addbook(model[index].bookId);
+                          homeScreenBloc.add(AddPdfToFav(
+                              email: sharedEmail, bid: model[index].bookId));
                         },
                       ),
                       onTap: () {
-                        // _pdfurldata("$baseurl" + model[index].bookPdfUrl);
+                        _pdfurldata("$baseurl" + model[index].bookPdfUrl);
                       },
                     ),
                   ),

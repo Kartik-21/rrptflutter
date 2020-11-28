@@ -58,16 +58,16 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     super.initState();
     //   _getUserBookData();
     //UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
-    myInterstitial = ii.createInterstitialAd()
-      ..load()
-      ..show();
-
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
+    // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
+    // myInterstitial = ii.createInterstitialAd()
+    //   ..load()
+    //   ..show();
+    //
+    // myBanner = createBannerAd()
+    //   ..load()
+    //   ..show(
+    //     anchorType: AnchorType.bottom,
+    //   );
   }
 
   //get userbook related data from server

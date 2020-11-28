@@ -63,16 +63,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void initState() {
     super.initState();
     //   _getNotificationData();
-    // UrlData i = UrlData();
-    FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
-    myInterstitial = ii.createInterstitialAd()
-      ..load()
-      ..show();
-    myBanner = createBannerAd()
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-      );
+    // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
+    // myInterstitial = ii.createInterstitialAd()
+    //   ..load()
+    //   ..show();
+    // myBanner = createBannerAd()
+    //   ..load()
+    //   ..show(
+    //     anchorType: AnchorType.bottom,
+    //   );
   }
 
   //open file link content

@@ -33,7 +33,6 @@ Future<String> signInWithGoogle() async {
   assert(user.photoUrl != null);
 
   name = user.displayName;
-  StringConstants.email = user.email;
   email = user.email;
   imageUrl = user.photoUrl;
 
