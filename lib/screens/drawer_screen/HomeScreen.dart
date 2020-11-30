@@ -49,8 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
 //    sharedName = preferences.getString('name') ?? null;
 //    sharedImgUrl = preferences.getString('imageurl') ?? null;
     print("shared email1 $sharedEmail");
-    homeScreenBloc = BlocProvider.of<HomeScreenBloc>(context);
-
   }
 
   Future<void> _getData() async {
@@ -91,6 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _getSharedData();
+    homeScreenBloc = BlocProvider.of<HomeScreenBloc>(context);
+    homeScreenBloc.add(FetchPdfData(email: sharedEmail));
+
     // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
     // myInterstitial = ii.createInterstitialAd()
     //   ..load()
