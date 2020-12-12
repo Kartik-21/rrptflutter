@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rrptflutter/blocs/FavouriteScreenBloc/favouritescreen_bloc.dart';
 import 'package:rrptflutter/blocs/HomeScreenBloc/homescreen_bloc.dart';
 import 'package:rrptflutter/screens/drawer_screen/AboutScreen.dart';
 import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
@@ -25,6 +26,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeScreenBloc(),
           child: HomeScreen(),
+        ),
+        BlocProvider(
+          create: (context) => FavouriteScreenBloc(),
+          child: FavouriteScreen(),
         )
       ],
       child: MaterialApp(

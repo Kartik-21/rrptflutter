@@ -1,16 +1,38 @@
 # rrptflutter
 
-A new Flutter application.
 
-## Getting Started
+if multiple bloc then use
+    multiblocprovider
+    BlocConsumer => builder , listener
 
-This project is a starting point for a Flutter application.
+if only data
+    BlocBuilder
 
-A few resources to get you started if this is your first Flutter project:
+if lisern data
+    bloclistener
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+if pass data to repository then
+        pass into event
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+if starting point is listview
+    initstate => loading widget
+
+if starting point is all design
+    initstate => design
+
+
+if mutliple clicks is occur in screen
+    add to the that state
+         @override
+          bool operator ==(Object other) => false;
+
+          @override
+          int get hashCode => super.hashCode;
+
+
+
+
+
+print all data use
+    debugprint
+    log(developer package)
