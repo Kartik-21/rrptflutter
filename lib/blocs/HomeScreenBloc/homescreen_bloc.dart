@@ -17,7 +17,7 @@ part 'homescreen_state.dart';
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   HomeScreenBloc() : super(HomeScreenInitState());
 
-  HomeScreenReop _homeScreenReop = HomeScreenReop();
+  HomeScreenRepo _homeScreenReop = HomeScreenRepo();
 
   @override
   void onTransition(Transition<HomeScreenEvent, HomeScreenState> transition) {
@@ -33,8 +33,6 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       yield HomeScreenLoadingState();
       try {
         response = await _homeScreenReop.GetAllPdf(email: event.email);
-
-        print(response);
         // Map<String, dynamic> jsonMap = json.decode(response.body);
         if (response != null) {
           if (response.statusCode.isBetween(200, 299)) {

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "321638515109-4v84n4s1bv962f37ntfvss85lsu39ttn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jkp.rrptflutter",
+            "certificate_hash": "028f8c3d3a29318f46bb2fe0313943a477c47bfe"
+          }
+        },
+        {
           "client_id": "321638515109-fjglo7sa89d4hepo60219327n2j05v3u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,11 +31,11 @@
           }
         },
         {
-          "client_id": "321638515109-4v84n4s1bv962f37ntfvss85lsu39ttn.apps.googleusercontent.com",
+          "client_id": "321638515109-joibk42lt81g74e9ggkovh0lm5e4pq0j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jkp.rrptflutter",
-            "certificate_hash": "028f8c3d3a29318f46bb2fe0313943a477c47bfe"
+            "certificate_hash": "3b1b3b740407680592c7dad070af90ebb8442b6c"
           }
         },
         {

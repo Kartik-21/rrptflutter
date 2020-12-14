@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rrptflutter/constants/StringConstants.dart';
 
-class HomeScreenReop {
+class HomeScreenRepo {
   Future<http.Response> GetAllPdf({String email}) async {
     http.Response response;
 

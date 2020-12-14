@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _getSharedData();
     homeScreenBloc = BlocProvider.of<HomeScreenBloc>(context);
-    homeScreenBloc.add(FetchPdfData(email: sharedEmail));
+    // homeScreenBloc.add(FetchPdfData(email: sharedEmail));
 
     // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
     // myInterstitial = ii.createInterstitialAd()
@@ -105,8 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _height ??= MediaQuery.of(context).size.height;
-    _width ??= MediaQuery.of(context).size.width;
+    _height ??= MediaQuery
+        .of(context)
+        .size
+        .height;
+    _width ??= MediaQuery
+        .of(context)
+        .size
+        .width;
     _blockOfHeight ??= _height / 100;
     _blockOfWidth ??= _width / 100;
     print("sh $sharedEmail");
@@ -141,27 +147,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _homeWidget(BuildContext context, List<PdfModel> model) {
-    TextStyle textStyle = Theme.of(context).textTheme.button;
+    TextStyle textStyle = Theme
+        .of(context)
+        .textTheme
+        .button;
     baseurl = StringConstants.baseUrlOfServer;
 
     return Container(
         child: Padding(
-      padding: EdgeInsets.only(bottom: bottomPadding),
-      child: RefreshIndicator(
-          onRefresh: _getData,
-          child: ListView.builder(
-              itemCount: model.length,
-              itemBuilder: (BuildContext context, int index) {
-                //debugPrint(baseurl + snapshot.data[index].book_image_url);
-                return Card(
-                  elevation: 4.0,
-                  //  margin: EdgeInsets.all(10.0),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 0.0),
-                    child: ListTile(
-                      leading: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          child:
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: RefreshIndicator(
+              onRefresh: _getData,
+              child: ListView.builder(
+                  itemCount: model.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //debugPrint(baseurl + snapshot.data[index].book_image_url);
+                    return Card(
+                      elevation: 4.0,
+                      //  margin: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0.0),
+                        child: ListTile(
+                          leading: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  5)),
+                              child:
                               // FadeInImage(
                               //   height: 60.0,
                               //   width: 85.0,
@@ -173,40 +183,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               //   ),
                               // )
                               Image.network(
-                            "https://drive.google.com/file/d/1ACFVY6l-wQkip0oJ93wufBEdJzk-XEUB/view?usp=sharing",
-                            height: 60.0,
-                            width: 85.0,
-                            fit: BoxFit.cover,
-                          )),
-                      title: Text(
-                        model[index].bookTitle,
-                        style: textStyle,
-                      ),
-                      subtitle: Text(model[index].bookLang),
-                      trailing: GestureDetector(
-                        child: Icon(
-                          Icons.add,
-                          size: 31.0,
+                                "https://drive.google.com/file/d/1ACFVY6l-wQkip0oJ93wufBEdJzk-XEUB/view?usp=sharing",
+                                height: 60.0,
+                                width: 85.0,
+                                fit: BoxFit.cover,
+                              )),
+                          title: Text(
+                            model[index].bookTitle,
+                            style: textStyle,
+                          ),
+                          subtitle: Text(model[index].bookLang),
+                          trailing: GestureDetector(
+                            child: Icon(
+                              Icons.add,
+                              size: 31.0,
+                            ),
+                            onTap: () {
+                              homeScreenBloc.add(AddPdfToFav(
+                                  email: sharedEmail,
+                                  bid: model[index].bookId));
+                            },
+                          ),
+                          onTap: () {
+                            _pdfurldata("$baseurl" + model[index].bookPdfUrl);
+                          },
                         ),
-                        onTap: () {
-                          homeScreenBloc.add(AddPdfToFav(
-                              email: sharedEmail, bid: model[index].bookId));
-                        },
                       ),
-                      onTap: () {
-                        _pdfurldata("$baseurl" + model[index].bookPdfUrl);
-                      },
-                    ),
-                  ),
-                );
-              })),
-    ));
+                    );
+                  })),
+        ));
   }
 
   @override
   void dispose() {
     super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
+    // myInterstitial.dispose();
+    // myBanner.dispose();
   }
 }
