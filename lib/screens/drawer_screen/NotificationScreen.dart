@@ -2,17 +2,22 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:rrptflutter/blocs/NotificationScreenBloc/notificationscreen_bloc.dart';
+import 'package:rrptflutter/models/NotificationModel.dart';
 import 'package:rrptflutter/models/notificationdata.dart';
 import 'dart:convert';
 import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:rrptflutter/screens/widgets/LoadingWidget.dart';
+import 'package:rrptflutter/screens/widgets/MyErrorWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -33,6 +38,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   BannerAd myBanner;
   var bottomPadding = 60.0;
   double _height, _width, _blockOfHeight, _blockOfWidth;
+
+  List<NotificationModel> list;
+
+  NotificationScreenBloc _notificationScreenBloc;
 
   BannerAd createBannerAd() {
     return BannerAd(
@@ -62,6 +71,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
+
+    _notificationScreenBloc = BlocProvider.of<NotificationScreenBloc>(context);
+    _notificationScreenBloc.add(FetchNotificationData());
     //   _getNotificationData();
     // FirebaseAdMob.instance.initialize(appId: ii.myAppIdForAds);
     // myInterstitial = ii.createInterstitialAd()
@@ -85,34 +97,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
-  //get notification related data from server
-  Future<List<NotificationData>> _getNotificationData() async {
-    // var i1 = UrlData();
-    try {
-      var url = StringConstants.getNotiData;
-      baseurl = StringConstants.baseUrlOfServer;
-      print(url);
-      var responce = await http.get(url);
-
-      if (200 == responce.statusCode) {
-        print("url found");
-        print(responce.body);
-        //    var data = json.decode(result.body);
-        //    print(data);
-        List<NotificationData> list =
-            notificationDataFromJson(responce.body).toList();
-        print(list.length);
-        return list;
-      } else {
-        print("data error");
-        return List<NotificationData>();
-      }
-    } catch (e) {
-      print(e.message);
-      return List<NotificationData>();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.subtitle1;
@@ -125,77 +109,82 @@ class _NotificationScreenState extends State<NotificationScreen> {
       height: _height,
       width: _width,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(S.of(context).notification),
-          elevation: 5.0,
-        ),
-        body: Padding(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: Container(
-            child: FutureBuilder(
-              future: _getNotificationData(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //        print(snapshot.data.toString());
-                if (snapshot.data == null) {
-                  return Center(
-                      child: Container(
-                    child: SpinKitFadingCircle(
-                      color: Colors.white,
-                      size: 60.0,
-                    ),
-                  ));
-                } else {
-                  return ListView.builder(
-                      reverse: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ChatBubble(
-                          clipper:
-                              ChatBubbleClipper4(type: BubbleType.sendBubble),
-                          alignment: Alignment.topRight,
-                          margin: EdgeInsets.only(top: 20),
-                          backGroundColor: Theme.of(context).accentColor,
-                          child: Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.7,
-                            ),
-                            child: Text(
-                              snapshot.data[index].notiName,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        );
-                        //   Card(
-                        //   elevation: 4.0,
-                        //   //  margin: EdgeInsets.all(10.0),
-                        //   child: Padding(
-                        //     padding: EdgeInsets.symmetric(vertical: 5.0),
-                        //     child: ListTile(
-                        //       title: Linkify(
-                        //         text: snapshot.data[index].noti_name,
-                        //         onOpen: (link) {
-                        //           print('${link.url}');
-                        //           _openfiledata('${link.url}');
-                        //         },
-                        //         style: textStyle,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
-                      });
-                }
-              },
-            ),
+          appBar: AppBar(
+            title: Text(S.of(context).notification),
+            elevation: 5.0,
           ),
-        ),
-      ),
+          body: BlocConsumer<NotificationScreenBloc, NotificationScreenState>(
+            listener: (context, state) {
+              if (state is NotificationScreenMsgState) {
+                Fluttertoast.showToast(msg: state.msg);
+              }
+            },
+            builder: (context, state) {
+              if (state is NotificationScreenInitState) {
+                return LoadingWidget();
+              } else if (state is NotificationScreenLoadingState) {
+                return LoadingWidget();
+              } else if (state is NotificationScreenLoadedState) {
+                list = state.noti;
+                return _notiWidget(context, state.noti);
+              } else if (state is NotificationScreenErrorState) {
+                return MyErrorWidget(state.errorMsg);
+              } else if (state is NotificationScreenMsgState) {
+                return _notiWidget(context, list);
+              }
+              return null;
+            },
+          )),
     );
+  }
+
+  Widget _notiWidget(BuildContext context, List<NotificationModel> model) {
+    return Padding(
+        padding: EdgeInsets.only(bottom: bottomPadding),
+        child: Container(
+            child: ListView.builder(
+                reverse: true,
+                itemCount: model.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ChatBubble(
+                    clipper: ChatBubbleClipper4(type: BubbleType.sendBubble),
+                    alignment: Alignment.topRight,
+                    margin: EdgeInsets.only(top: 20),
+                    backGroundColor: Theme.of(context).accentColor,
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.7,
+                      ),
+                      child: Text(
+                        model[index].notiName,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                  //   Card(
+                  //   elevation: 4.0,
+                  //   //  margin: EdgeInsets.all(10.0),
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(vertical: 5.0),
+                  //     child: ListTile(
+                  //       title: Linkify(
+                  //         text: snapshot.data[index].noti_name,
+                  //         onOpen: (link) {
+                  //           print('${link.url}');
+                  //           _openfiledata('${link.url}');
+                  //         },
+                  //         style: textStyle,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // );
+                })));
   }
 
   @override
   void dispose() {
     super.dispose();
-    myInterstitial.dispose();
-    myBanner.dispose();
+    // myInterstitial.dispose();
+    // myBanner.dispose();
   }
 }
