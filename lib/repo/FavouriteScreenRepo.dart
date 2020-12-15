@@ -6,13 +6,13 @@ import 'package:rrptflutter/constants/StringConstants.dart';
 class FavouriteScreenRepo {
   Future<http.Response> GetAllUserPdf({String email}) async {
     http.Response response;
-
+    print("repo $email");
     response = await http.post(Uri.encodeFull(StringConstants.getUserPdfData),
         body: jsonEncode({"email": email}),
         headers: {
           "Content-Type": "application/json"
         }).timeout(StringConstants.TIMEOUT_DURATION);
-    // debugPrint(response.body.toString());
+    // debugPrint(response.body);
     return response;
   }
 

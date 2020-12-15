@@ -31,7 +31,6 @@ class FavouriteScreenBloc
 
         // Map<String, dynamic> jsonMap = json.decode(response.body);
         if (response != null) {
-          print("hello " + response.body);
           if (response.statusCode.isBetween(200, 299)) {
             List<UserPdfModel> pdfs(String str) => List<UserPdfModel>.from(
                 json.decode(str).map((x) => UserPdfModel.fromJson(x)));

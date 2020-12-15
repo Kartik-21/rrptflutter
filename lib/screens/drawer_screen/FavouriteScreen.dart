@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:rrptflutter/blocs/FavouriteScreenBloc/favouritescreen_bloc.dart';
 import 'package:rrptflutter/models/UserPdfModel.dart';
-import 'package:rrptflutter/models/userbookdata.dart';
-import 'dart:convert';
 import 'package:rrptflutter/constants/StringConstants.dart';
 import 'package:rrptflutter/screens/widgets/LoadingWidget.dart';
 import 'package:rrptflutter/screens/widgets/MyErrorWidget.dart';
@@ -37,9 +34,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 //  var sharedImgUrl;
   InterstitialAd myInterstitial;
   BannerAd myBanner;
+  SharedPreferences preferences;
 
   Future<void> _getSharedData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences = await SharedPreferences.getInstance();
     sharedEmail = preferences.getString('email') ?? null;
 //    name1 = preferences.getString('name') ?? null;
 //    imgurl1 = preferences.getString('imageurl') ?? null;
@@ -61,18 +59,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     );
   }
 
-  Future<void> _getData() async {
-    setState(() {
-      //   _getUserBookData();
-      Fluttertoast.showToast(msg: "Loading...");
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     _getSharedData();
-
     _favouriteScreenBloc = BlocProvider.of<FavouriteScreenBloc>(context);
     // _favouriteScreenBloc.add(FetchUserPdfData(email: sharedEmail));
     //UrlData i = UrlData();
@@ -101,20 +91,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme
-        .of(context)
-        .textTheme
-        .button;
-    _height = _height ?? MediaQuery
-        .of(context)
-        .size
-        .height;
-    _width = _width ?? MediaQuery
-        .of(context)
-        .size
-        .width;
+    TextStyle textStyle = Theme.of(context).textTheme.button;
+    _height = _height ?? MediaQuery.of(context).size.height;
+    _width = _width ?? MediaQuery.of(context).size.width;
     _blockOfHeight = _height / 100;
     _blockOfWidth = _width / 100;
+    _getSharedData();
     _favouriteScreenBloc.add(FetchUserPdfData(email: sharedEmail));
 
     return Container(
@@ -122,9 +104,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       height: _height,
       child: Scaffold(
           appBar: AppBar(
-            title: Text(S
-                .of(context)
-                .favourite),
+            title: Text(S.of(context).favourite),
             elevation: 5.0,
           ),
           body: BlocConsumer<FavouriteScreenBloc, FavouriteScreenState>(
@@ -153,75 +133,63 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   }
 
   Widget _favWidget(BuildContext context, List<UserPdfModel> model) {
-    TextStyle textStyle = Theme
-        .of(context)
-        .textTheme
-        .button;
+    TextStyle textStyle = Theme.of(context).textTheme.button;
     baseurl = StringConstants.baseUrlOfServer;
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding),
       child: Container(
-          child: RefreshIndicator(
-            onRefresh: _getData,
-            child: ListView.builder(
-                itemCount: model.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    elevation: 4.0,
-                    //  margin: EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      child: ListTile(
-                        leading: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child:
-                            // FadeInImage(
-                            //   height: 60.0,
-                            //   width: 85.0,
-                            //   fit: BoxFit.cover,
-                            //   image:
-                            //   NetworkImage(
-                            //       // baseurl +
-                            //       // snapshot.data[index].bookImageUrl
-                            //   "https://drive.google.com/file/d/11NbbI8R9bIWm2WeiFiCnglfBlRKvzBVr/view?usp=sharing"
-                            //   ),
-                            //   placeholder:
-                            //       AssetImage("assets/loading.gif"),
-                            // )
-                            Image.network(
-                              "https://drive.google.com/file/d/1ACFVY6l-wQkip0oJ93wufBEdJzk-XEUB/view?usp=sharing",
-                              height: 60.0,
-                              width: 85.0,
-                              fit: BoxFit.cover,
-                            )),
-                        title: Text(
-                          model[index].bookTitle,
-                          style: textStyle,
-                        ),
-                        //   subtitle: Text(snapshot.data[index].book_lang),
-                        trailing: GestureDetector(
-                          child: Icon(Icons.delete),
-                          onTap: () {
-                            _favouriteScreenBloc
-                                .add(
-                                RemovePdfToFav(ubid: model[index].userBookId));
-                            setState(() {});
-                            // _delbook(snapshot.data[index].userBookId);
-                            // setState(() {
-                            //   debugPrint("delete button");
-                            //   // _getUserBookData();
-                            // });
-                          },
-                        ),
+          child: ListView.builder(
+              itemCount: model.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 4.0,
+                  //  margin: EdgeInsets.all(10.0),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                    child: ListTile(
+                      leading: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          child:
+                              // FadeInImage(
+                              //   height: 60.0,
+                              //   width: 85.0,
+                              //   fit: BoxFit.cover,
+                              //   image:
+                              //   NetworkImage(
+                              //       // baseurl +
+                              //       // snapshot.data[index].bookImageUrl
+                              //   "https://drive.google.com/file/d/11NbbI8R9bIWm2WeiFiCnglfBlRKvzBVr/view?usp=sharing"
+                              //   ),
+                              //   placeholder:
+                              //       AssetImage("assets/loading.gif"),
+                              // )
+                              Image.network(
+                            "https://drive.google.com/file/d/1ACFVY6l-wQkip0oJ93wufBEdJzk-XEUB/view?usp=sharing",
+                            height: 60.0,
+                            width: 85.0,
+                            fit: BoxFit.cover,
+                          )),
+                      title: Text(
+                        model[index].bookTitle,
+                        style: textStyle,
+                      ),
+                      //   subtitle: Text(snapshot.data[index].book_lang),
+                      trailing: GestureDetector(
+                        child: Icon(Icons.delete),
                         onTap: () {
-                          _pdfurldata(baseurl + model[index].bookPdfUrl);
+                          _favouriteScreenBloc.add(
+                              RemovePdfToFav(ubid: model[index].userBookId));
+                          setState(() {});
                         },
                       ),
+                      onTap: () {
+                        _pdfurldata(baseurl + model[index].bookPdfUrl);
+                      },
                     ),
-                  );
-                }),
-          )),
+                  ),
+                );
+              })),
     );
   }
 

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,14 +5,9 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:rrptflutter/blocs/NotificationScreenBloc/notificationscreen_bloc.dart';
 import 'package:rrptflutter/models/NotificationModel.dart';
-import 'package:rrptflutter/models/notificationdata.dart';
-import 'dart:convert';
 import 'package:rrptflutter/constants/StringConstants.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:rrptflutter/screens/widgets/LoadingWidget.dart';
 import 'package:rrptflutter/screens/widgets/MyErrorWidget.dart';
@@ -59,14 +52,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       },
     );
   }
-
-//
-//  Future<void> _getData() async {
-//    setState(() {
-//      // _getNotificationData();
-//      Fluttertoast.showToast(msg: "Loading...");
-//    });
-//  }
 
   @override
   void initState() {
