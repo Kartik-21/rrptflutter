@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  double _height, _width, _blockOfHeight, _blockOfWidth;
+  late double _height, _width, _blockOfHeight, _blockOfWidth;
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class _DrawerHomeScreenState extends State<DrawerHomeScreen> {
   var sharedEmail;
   var sharedName;
   var sharedImgUrl;
-  double _height, _width, _blockOfHeight, _blockOfWidth;
+  late double _height, _width, _blockOfHeight, _blockOfWidth;
 
   @override
   void initState() {

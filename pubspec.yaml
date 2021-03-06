@@ -3,21 +3,21 @@ description: A new Flutter application.
 version: 1.1.0
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   #  for internationlization
-  intl: 0.16.1
+  intl: 0.17.0
   flutter_localizations:
     sdk: flutter
 
   #  different signin button
   flutter_signin_button: ^1.0.0
 
-  http: 0.12.1
+  http: ^0.13.0
 
   #  for create models
   json_annotation: 3.1.0
@@ -26,15 +26,17 @@ dependencies:
 
   fluttertoast: 4.0.1
   cupertino_icons: ^0.1.2
-  url_launcher: 5.5.0
+  url_launcher: ^6.0.2
   flutter_spinkit: ^4.1.2
   share: 0.6.4+3
 
   #  google login
-  firebase_auth: ^0.16.0
-  google_sign_in: ^4.1.1
-  firebase_admob: 0.9.3+2
-  firebase_core: 0.4.5
+  firebase_auth: ^1.0.0
+  google_sign_in: ^5.0.0
+#  firebase_admob: ^0.11.0+2
+  google_mobile_ads: ^0.11.0+2
+  firebase_core: ^1.0.0
+#  http_parser: ^4.0.0
   #  sign_in_with_apple: 2.5.2
 
   # create clickable text for link finder
@@ -49,7 +51,7 @@ dependencies:
   # check internet connectivity
   #  connectivity: 0.4.9+3
 
-  shared_preferences: 0.5.8
+  shared_preferences: ^2.0.3
 
   #  get file location from device
   #  path_provider: 1.6.18

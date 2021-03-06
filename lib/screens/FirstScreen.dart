@@ -4,7 +4,7 @@ import 'package:rrptflutter/screens/DrawerHomeScreen.dart';
 import 'package:rrptflutter/screens/LoginScreen.dart';
 
 class FirstScreen extends StatelessWidget {
-  double _height, _width, _blockOfHeight, _blockOfWidth;
+  late double _height, _width, _blockOfHeight, _blockOfWidth;
 
   @override
   Widget build(BuildContext context) {
